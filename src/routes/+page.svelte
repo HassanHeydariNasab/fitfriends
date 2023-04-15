@@ -9,7 +9,7 @@
 	import type { Business } from '@type/business';
 
 	let mapComponent: Map;
-	let { lat, lng, zoom } = { lat: 35.79517051, lng: 51.43278521, zoom: 16 };
+	let { lat, lng, zoom } = { lat: 35.8, lng: 51.44, zoom: 16 };
 
 	let businesses: Business[] = [];
 
@@ -26,12 +26,18 @@
 		console.log(event.detail.center.lat, event.detail.center.lng);
 	}
 
+	function onGeolocate(event: any) {
+		lat = event.detail.coords.latitude;
+		lng = event.detail.coords.longitude;
+		fetchBusinesses();
+	}
+
 	function showBusiness(id: string | null) {
 		console.log({ id });
 	}
 
 	function fetchBusinesses() {
-		fetch(`${PUBLIC_API_URL}/v1/GeoSearch/51.43278521,35.79517051,1`)
+		fetch(`${PUBLIC_API_URL}/v1/GeoSearch/${lng},${lat}`)
 			.then((response) => response.json())
 			.then((j) => {
 				businesses = j.list;
@@ -68,6 +74,7 @@
 	<NavigationControl />
 	<GeolocateControl
 		options={{ positionOptions: { enableHighAccuracy: true }, showUserHeading: true }}
+		on:geolocate={onGeolocate}
 	/>
 	<ScaleControl />
 </Map>
