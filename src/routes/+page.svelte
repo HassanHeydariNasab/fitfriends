@@ -6,13 +6,20 @@
 	const { GeolocateControl, NavigationControl, ScaleControl } = controls;
 	import MapboxLanguage from '@mapbox/mapbox-gl-language';
 
-	import CusotmMarker from '@components/marker.svelte';
+	import CusotmMarker from '@components/Marker.svelte';
+	import BottomSheet from '@components/BottomSheet.svelte';
 	import type { Business } from '@type/business';
+	import { mockedBusinesses } from '@data/businesses.mock';
+	import BusinessShortInfo from '@components/BusinessShortInfo.svelte';
 
 	let mapComponent: Map;
 	let { lat, lng, zoom } = { lat: 35.8, lng: 51.44, zoom: 16 };
 
-	let businesses: Business[] = [];
+	let businesses: Business[] = mockedBusinesses;
+	let selectedBusinessId: string | undefined = undefined;
+	let selectedBusiness: Business | undefined = undefined;
+
+	$: selectedBusiness = businesses?.find((business) => business.id === selectedBusinessId);
 
 	onMount(() => {
 		fetchBusinesses();
@@ -41,12 +48,18 @@
 		fetchBusinesses();
 	}
 
-	function showBusiness(id: string | null) {
+	function showBusiness(id: string) {
 		console.log({ id });
+		selectedBusinessId = id;
+	}
+
+	function hideBusiness() {
+		console.log('XXX');
+		selectedBusinessId = undefined;
 	}
 
 	function fetchBusinesses() {
-		fetch(`${PUBLIC_API_URL}/v1/GeoSearch/${lng},${lat}`)
+		fetch(`${PUBLIC_API_URL}/v1/GeoSearch/${lng},${lat},2`)
 			.then((response) => response.json())
 			.then((j: { total: number; list: Business[] }) => {
 				if (j.total) {
@@ -85,8 +98,17 @@
 
 	<NavigationControl />
 	<GeolocateControl
-		options={{ positionOptions: { enableHighAccuracy: true }, showUserHeading: true }}
+		options={{
+			positionOptions: { enableHighAccuracy: true },
+			showUserHeading: true,
+			showAccuracyCircle: false
+		}}
 		on:geolocate={onGeolocate}
 	/>
 	<ScaleControl />
 </Map>
+{#if selectedBusiness}
+	<BottomSheet on:close={hideBusiness}
+		><BusinessShortInfo business={selectedBusiness} /></BottomSheet
+	>
+{/if}

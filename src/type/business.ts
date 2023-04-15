@@ -1,5 +1,5 @@
 export interface Business {
-	id: string | null;
+	id: string;
 	name: string | null;
 	deleted: boolean;
 	description: string | null;
