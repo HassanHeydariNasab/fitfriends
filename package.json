@@ -14,7 +14,6 @@
 		"format": "prettier --plugin-search-dir . --write ."
 	},
 	"devDependencies": {
-		"@beyonk/svelte-mapbox": "^9.0.5",
 		"@playwright/test": "^1.28.1",
 		"@sveltejs/adapter-auto": "^2.0.0",
 		"@sveltejs/kit": "^1.5.0",
@@ -35,5 +34,9 @@
 		"vite": "^4.2.0",
 		"vitest": "^0.25.3"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"@beyonk/svelte-mapbox": "^9.0.5",
+		"@mapbox/mapbox-gl-language": "^1.0.1"
+	}
 }

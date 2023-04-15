@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { PUBLIC_API_URL, PUBLIC_MAPBOX_TOKEN } from '$env/static/public';
+	import { PUBLIC_API_URL, PUBLIC_MAPBOX_TOKEN, PUBLIC_MAPBOX_STYLE } from '$env/static/public';
 
 	import { Map, Marker, controls } from '@beyonk/svelte-mapbox/components';
 	const { GeolocateControl, NavigationControl, ScaleControl } = controls;
+	import MapboxLanguage from '@mapbox/mapbox-gl-language';
 
 	import CusotmMarker from '@components/marker.svelte';
 	import type { Business } from '@type/business';
@@ -19,6 +20,14 @@
 
 	function onReady() {
 		mapComponent?.setCenter([lng, lat], zoom);
+		const language = new MapboxLanguage();
+		mapComponent?.getMap().addControl(language);
+		mapComponent
+			?.getMapbox()
+			.setRTLTextPlugin(
+				'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.2.3/mapbox-gl-rtl-text.js'
+			);
+
 		//mapComponent?.flyTo({ center: [lng, lat] }); // documentation (https://docs.mapbox.com/mapbox-gl-js/example/flyto)
 	}
 
@@ -39,8 +48,10 @@
 	function fetchBusinesses() {
 		fetch(`${PUBLIC_API_URL}/v1/GeoSearch/${lng},${lat}`)
 			.then((response) => response.json())
-			.then((j) => {
-				businesses = j.list;
+			.then((j: { total: number; list: Business[] }) => {
+				if (j.total) {
+					businesses = j.list;
+				}
 				console.log({ j });
 			});
 	}
@@ -53,7 +64,8 @@
 	on:recentre={onRecenter}
 	bind:zoom
 	options={{ scrollZoom: true }}
-	style="mapbox://styles/mapbox/outdoors-v11"
+	style={PUBLIC_MAPBOX_STYLE}
+	customStylesheetUrl={true}
 >
 	{#each businesses as business}
 		<Marker
