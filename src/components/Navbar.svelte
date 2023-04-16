@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { _ } from 'svelte-i18n';
 
 	import Location from './icons/location.svelte';
 	import Person from './icons/person.svelte';
 
 	const links = [
-		{ label: 'Explore', href: '/', icon: Location },
-		{ label: 'Profile', href: '/profile', icon: Person }
+		{ label: $_('explore'), href: '/', icon: Location },
+		{ label: $_('profile'), href: '/profile', icon: Person }
 	];
 </script>
 

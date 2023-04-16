@@ -37,6 +37,7 @@
 	"type": "module",
 	"dependencies": {
 		"@beyonk/svelte-mapbox": "^9.0.5",
-		"@mapbox/mapbox-gl-language": "^1.0.1"
+		"@mapbox/mapbox-gl-language": "^1.0.1",
+		"svelte-i18n": "^3.6.0"
 	}
 }
