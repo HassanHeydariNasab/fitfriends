@@ -3,8 +3,8 @@
 	import Navbar from '@components/Navbar.svelte';
 </script>
 
-<div class="h-full flex flex-col">
-	<div class="flex-1 relative">
+<div class="flex h-full flex-col">
+	<div class="relative flex-1">
 		<slot />
 	</div>
 	<Navbar />

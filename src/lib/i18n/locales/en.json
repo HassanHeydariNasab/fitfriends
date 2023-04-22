@@ -1,5 +1,14 @@
 {
 	"explore": "Meauty Map",
 	"profile": "Profile",
-	"booking": "Book"
+	"booking": "Book",
+	"request_otp_title": "Login",
+	"phone_number": "Phone Number",
+	"login": "Login",
+	"confirm": "Confirm",
+	"terms_and_conditions": "I agree to terms and conditions.",
+	"first_name": "First Name",
+	"last_name": "Last Name",
+	"code": "Code",
+	"registration": "Registration"
 }

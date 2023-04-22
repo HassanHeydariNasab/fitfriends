@@ -2,10 +2,8 @@
 	import '@src/app.css';
 </script>
 
-<div class="h-full flex flex-col">
-	<div class="flex-1 relative">
-		<slot />
-	</div>
+<div class="relative flex h-full flex-col">
+	<slot />
 </div>
 
 <style lang="postcss">

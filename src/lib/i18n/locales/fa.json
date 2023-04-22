@@ -1,5 +1,14 @@
 {
 	"explore": "بیوتی مپ",
 	"profile": "پروفایل",
-	"booking": "گرفتن وقت"
+	"booking": "گرفتن وقت",
+	"request_otp_title": "ورود",
+	"phone_number": "شماره موبایل",
+	"login": "ورود",
+	"confirm": "تأیید",
+	"terms_and_conditions": "با شرایط و ضوابط بیوتی‌میوتی موافقم.",
+	"first_name": "نام",
+	"last_name": "نام خانوادگی",
+	"code": "کد",
+	"registration": "ثبت‌نام"
 }

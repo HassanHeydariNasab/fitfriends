@@ -11,12 +11,12 @@
 	];
 </script>
 
-<nav class="flex justify-around bg-white p-4 drop-shadow-2xl">
+<nav class="z-20 flex justify-around bg-white p-4 drop-shadow-2xl">
 	{#each links as link}
 		<a
 			href={link.href}
 			class:active={$page.url.pathname === link.href}
-			class="flex flex-col items-center text-sm gap-2 font-bold text-gray-400"
+			class="flex flex-col items-center gap-2 text-sm font-bold text-gray-400"
 		>
 			<svelte:component this={link.icon} />
 			{link.label}
@@ -26,6 +26,6 @@
 
 <style lang="postcss">
 	.active {
-		@apply text-amber-500;
+		@apply text-primary-500;
 	}
 </style>

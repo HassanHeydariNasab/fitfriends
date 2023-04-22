@@ -3,14 +3,17 @@
 </script>
 
 <button
-	class="h-12 w-12 bg-yellow-500 rounded-full p-2 relative hover:drop-shadow-lg transition-all duration-300"
+	class="mapbox relative h-12 w-12 rounded-full bg-yellow-500 p-2 transition-all duration-300 hover:bg-yellow-500 hover:drop-shadow-lg"
 	on:click
 >
 	<div
-		class="h-5 max-w-xs whitespace-nowrap overflow-hidden text-center font-bold bg-yellow-500 rounded-md mb-1 absolute top-[-1.5rem] right-[-60%] px-1"
+		dir="auto"
+		class="absolute left-[-100%] right-[-100%] top-[-1.5rem] mb-1 h-5 overflow-hidden text-ellipsis whitespace-nowrap rounded-md"
 	>
-		{name}
+		<span class="max-w-[max-content] rounded-md bg-yellow-500 px-1 font-bold">
+			{name}
+		</span>
 	</div>
 	<img src="/favicon.svg" alt="" />
-	<div class="w-4 h-4 rotate-45 bg-yellow-500 absolute bottom-[-0.3rem] right-4 z-[-1]" />
+	<div class="absolute bottom-[-0.3rem] right-4 z-[-1] h-4 w-4 rotate-45 bg-yellow-500" />
 </button>
