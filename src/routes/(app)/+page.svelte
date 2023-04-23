@@ -8,9 +8,9 @@
 
 	import CusotmMarker from '@components/Marker.svelte';
 	import BottomSheet from '@components/BottomSheet.svelte';
+	import BusinessShortInfo from '@components/BusinessShortInfo.svelte';
 	import type { Business } from '@type/business';
 	import { mockedBusinesses } from '@data/businesses.mock';
-	import BusinessShortInfo from '@components/BusinessShortInfo.svelte';
 
 	let mapComponent: Map;
 	let { lat, lng, zoom } = { lat: 35.8, lng: 51.44, zoom: 16 };

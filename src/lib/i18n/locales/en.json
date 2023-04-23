@@ -1,7 +1,9 @@
 {
 	"explore": "Meauty Map",
 	"profile": "Profile",
+	"my_bookings": "My Bookings",
 	"booking": "Book",
+	"cancel_booking": "Cancel",
 	"request_otp_title": "Login",
 	"phone_number": "Phone Number",
 	"login": "Login",
@@ -10,5 +12,7 @@
 	"first_name": "First Name",
 	"last_name": "Last Name",
 	"code": "Code",
-	"registration": "Registration"
+	"registration": "Registration",
+	"from": "from",
+	"to": "to"
 }

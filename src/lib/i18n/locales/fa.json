@@ -1,7 +1,9 @@
 {
 	"explore": "بیوتی مپ",
 	"profile": "پروفایل",
-	"booking": "گرفتن وقت",
+	"my_bookings": "رزروهای من",
+	"booking": "رزرو نوبت",
+	"cancel_booking": "لغو رزور",
 	"request_otp_title": "ورود",
 	"phone_number": "شماره موبایل",
 	"login": "ورود",
@@ -10,5 +12,7 @@
 	"first_name": "نام",
 	"last_name": "نام خانوادگی",
 	"code": "کد",
-	"registration": "ثبت‌نام"
+	"registration": "ثبت‌نام",
+	"from": "از",
+	"to": "تا"
 }

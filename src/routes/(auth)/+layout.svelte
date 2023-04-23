@@ -2,13 +2,6 @@
 	import '@src/app.css';
 </script>
 
-<div class="relative flex h-full flex-col">
+<div class="relative flex min-h-full flex-col overflow-y-auto">
 	<slot />
 </div>
-
-<style lang="postcss">
-	:global(html, body) {
-		background-color: theme(colors.white);
-		height: 100%;
-	}
-</style>

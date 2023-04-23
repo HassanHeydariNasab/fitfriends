@@ -36,13 +36,16 @@
 
 <div class="flex-1" />
 
-<form class="grid items-center gap-8 self-center text-center" on:submit={onSubmit}>
-	<div class="text-gray-800 transition-[rotate]" style:rotate={code.length * 90 + 'deg'}>
+<form
+	class="m-4 grid items-center justify-items-center gap-6 self-center rounded-3xl bg-white p-4 text-center drop-shadow-md"
+	on:submit={onSubmit}
+>
+	<div class="w-full text-gray-800 transition-[rotate]" style:rotate={code.length * 90 + 'deg'}>
 		<Logo />
 	</div>
 	<!-- <h1 class="text-5xl font-bold">{$_('request_otp_title')}</h1> -->
 	<label>
-		<div class="mb-1 opacity-60">{$_('code')}</div>
+		<div class="mb-1 text-sm opacity-60">{$_('code')}</div>
 		<input bind:value={code} type="tel" autofocus disabled={isLoading} />
 	</label>
 	<button disabled={isDisabled}>

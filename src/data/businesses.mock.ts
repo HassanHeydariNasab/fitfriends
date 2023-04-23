@@ -1,4 +1,6 @@
-export const mockedBusinesses = [
+import type { Business } from '@src/type/business';
+
+export const mockedBusinesses: Business[] = [
 	{
 		id: '643728d3a4c7b7fff',
 		name: 'سالن زیبایی بانو میهنی',

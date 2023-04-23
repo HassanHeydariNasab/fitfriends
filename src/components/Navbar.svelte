@@ -4,19 +4,25 @@
 
 	import Location from './icons/location.svelte';
 	import Person from './icons/person.svelte';
+	import ListBox from './icons/list-box.svelte';
 
 	const links = [
+		{ label: $_('my_bookings'), href: '/my-bookings', icon: ListBox },
 		{ label: $_('explore'), href: '/', icon: Location },
 		{ label: $_('profile'), href: '/profile', icon: Person }
 	];
 </script>
 
-<nav class="z-20 flex justify-around bg-white p-4 drop-shadow-2xl">
+<nav
+	class="drop-shadow-3xl z-20 flex justify-around bg-gradient-to-t from-gray-900 to-gray-700 p-4"
+>
 	{#each links as link}
 		<a
 			href={link.href}
-			class:active={$page.url.pathname === link.href}
-			class="flex flex-col items-center gap-2 text-sm font-bold text-gray-400"
+			class:active={$page.url.pathname === '/' && link.href === '/'
+				? true
+				: link.href !== '/' && $page.url.pathname.startsWith(link.href)}
+			class="flex flex-1 flex-col items-center gap-2 text-sm font-bold text-gray-500"
 		>
 			<svelte:component this={link.icon} />
 			{link.label}

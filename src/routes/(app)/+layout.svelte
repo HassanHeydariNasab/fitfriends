@@ -4,15 +4,8 @@
 </script>
 
 <div class="flex h-full flex-col">
-	<div class="relative flex-1">
+	<div class="relative flex-1 overflow-y-auto">
 		<slot />
 	</div>
 	<Navbar />
 </div>
-
-<style lang="postcss">
-	:global(html, body) {
-		background-color: theme(colors.white);
-		height: 100%;
-	}
-</style>
