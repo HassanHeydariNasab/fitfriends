@@ -15,9 +15,9 @@
 	in:slide|global
 	out:slide|global
 >
-	<div class="m-4 cursor-pointer self-end" on:click={close}>
+	<button class="m-4 cursor-pointer self-end border-none !bg-transparent" on:click={close}>
 		<CloseCircle class="text-gray-700 transition-colors hover:text-gray-900" />
-	</div>
+	</button>
 	<div class="p-4">
 		<slot />
 	</div>
