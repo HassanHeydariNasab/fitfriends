@@ -12,8 +12,8 @@
 
 <div
 	class="absolute bottom-0 z-10 flex max-h-[100%] w-full flex-col overflow-y-auto rounded-t-3xl bg-gradient-to-tr from-pink-200 to-violet-200"
-	in:slide|global
-	out:slide|global
+	in:slide
+	out:slide
 >
 	<button class="m-4 cursor-pointer self-end border-none !bg-transparent" on:click={close}>
 		<CloseCircle class="text-gray-700 transition-colors hover:text-gray-900" />

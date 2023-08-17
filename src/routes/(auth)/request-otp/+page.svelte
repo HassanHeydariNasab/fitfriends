@@ -47,7 +47,7 @@
 	<!-- <h1 class="text-5xl font-bold">{$_('request_otp_title')}</h1> -->
 	<label>
 		<div class="mb-1 text-sm opacity-60">{$_('phone_number')}</div>
-		<input bind:value={phoneNumber} type="tel" autofocus disabled={isLoading} />
+		<input bind:value={phoneNumber} type="tel" disabled={isLoading} />
 	</label>
 	<button disabled={isDisabled}>
 		{$_('login')}
