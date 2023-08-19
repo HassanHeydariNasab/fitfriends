@@ -7,7 +7,7 @@
 	import ListBox from './icons/list-box.svelte';
 
 	const links = [
-		{ label: $_('my_bookings'), href: '/my-bookings', icon: ListBox },
+		{ label: $_('my_sessions'), href: '/my-sessions', icon: ListBox },
 		{ label: $_('explore'), href: '/', icon: Location },
 		{ label: $_('profile'), href: '/profile', icon: Person }
 	];
