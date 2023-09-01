@@ -1,15 +1,15 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { _ } from 'svelte-i18n';
+	import { i18n } from '$lib/i18n';
 
 	import Location from './icons/location.svelte';
 	import Person from './icons/person.svelte';
 	import ListBox from './icons/list-box.svelte';
 
-	const links = [
-		{ label: $_('my_sessions'), href: '/my-sessions', icon: ListBox },
-		{ label: $_('explore'), href: '/', icon: Location },
-		{ label: $_('profile'), href: '/profile', icon: Person }
+	$: links = [
+		{ label: $i18n.t('my_sessions'), href: '/my-sessions', icon: ListBox },
+		{ label: $i18n.t('explore'), href: '/', icon: Location },
+		{ label: $i18n.t('profile'), href: '/profile', icon: Person }
 	];
 </script>
 

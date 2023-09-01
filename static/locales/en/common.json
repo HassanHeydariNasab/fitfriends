@@ -2,7 +2,8 @@
 	"explore": "Find a Session",
 	"profile": "Profile",
 	"my_sessions": "My Sessions",
-	"show_details": "Show Details",
+	"show_group_details": "Show Group Details",
+	"show_session_details": "Show Session Details",
 	"request_otp_title": "Login",
 	"phone_number": "Phone Number",
 	"login": "Login",
@@ -12,5 +13,10 @@
 	"code": "Code",
 	"registration": "Registration",
 	"from": "from",
-	"to": "to"
+	"to": "to",
+	"session_information": "Session Information",
+	"group_information": "Group Information",
+	"leave_session": "Leave Session",
+	"join_session": "Join Session",
+	"hello": "Hello"
 }

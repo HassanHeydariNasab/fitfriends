@@ -1,0 +1,22 @@
+{
+	"explore": "یافتن جلسه",
+	"profile": "پروفایل",
+	"my_sessions": "جلسات من",
+	"show_group_details": "نمایش جزئیات گروه",
+	"show_session_details": "نمایش جزئیات جلسه",
+	"request_otp_title": "ورود",
+	"phone_number": "شماره تلفن",
+	"login": "ورود",
+	"confirm": "تأیید",
+	"terms_and_conditions": "موافقم با شرایط و مقررات.",
+	"name": "نام",
+	"code": "کد",
+	"registration": "ثبت نام",
+	"from": "از",
+	"to": "تا",
+	"session_information": "اطلاعات جلسه",
+	"group_information": "اطلاعات گروه",
+	"leave_session": "ترک جلسه",
+	"join_session": "پیوستن به جلسه",
+	"hello": "سلام"
+}

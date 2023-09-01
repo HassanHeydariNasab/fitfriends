@@ -49,12 +49,10 @@
 	}
 
 	function showSession(id: string) {
-		console.log({ id });
 		selectedSessionId = id;
 	}
 
 	function hideSession() {
-		console.log('XXX');
 		selectedSessionId = undefined;
 	}
 </script>
@@ -72,7 +70,7 @@
 	{#each sessions as session}
 		<Marker lat={session.latitude} lng={session.longitude} popup={false} markerOffset={[0, -32]}>
 			<CusotmMarker
-				name={session.title || 'ناشناس'}
+				name={session.group.title}
 				on:click={() => {
 					showSession(session.id);
 				}}
@@ -84,8 +82,10 @@
 	<GeolocateControl
 		options={{
 			positionOptions: { enableHighAccuracy: true },
-			showSessionHeading: true,
-			showAccuracyCircle: false
+			showUserLocation: true,
+			showUserHeading: true,
+			showAccuracyCircle: true,
+			trackUserLocation: true
 		}}
 		on:geolocate={onGeolocate}
 	/>

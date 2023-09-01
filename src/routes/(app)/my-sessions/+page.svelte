@@ -1,6 +1,5 @@
 <script>
-	import { _ } from 'svelte-i18n';
-
+	//import { i18n } from '$lib/i18n';
 	import SessionOverview from '@components/SessionOverview.svelte';
 	import { mockedSessions } from '@data/sessions.mock';
 
