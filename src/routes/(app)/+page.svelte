@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { PUBLIC_API_URL, PUBLIC_MAPBOX_TOKEN, PUBLIC_MAPBOX_STYLE } from '$env/static/public';
+	import { PUBLIC_MAPBOX_TOKEN, PUBLIC_MAPBOX_STYLE } from '$env/static/public';
 
 	import { Map, Marker, controls } from '@beyonk/svelte-mapbox/components';
 	const { GeolocateControl, NavigationControl, ScaleControl } = controls;
@@ -38,11 +38,11 @@
 		//mapComponent?.flyTo({ center: [lng, lat] }); // documentation (https://docs.mapbox.com/mapbox-gl-js/example/flyto)
 	}
 
-	function onRecenter(event: any) {
+	function onRecenter(event: Map['$on:recentre']) {
 		console.log(event.detail.center.lat, event.detail.center.lng);
 	}
 
-	function onGeolocate(event: any) {
+	function onGeolocate(event: Map['$on:geolocate']) {
 		lat = event.detail.coords.latitude;
 		lng = event.detail.coords.longitude;
 		// fetch sessions

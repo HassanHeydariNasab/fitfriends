@@ -1,7 +1,7 @@
 {
-	"explore": "یافتن جلسه",
+	"explore": "جستجو",
 	"profile": "پروفایل",
-	"my_sessions": "جلسات من",
+	"my_sessions": "تقویم",
 	"show_group_details": "نمایش جزئیات گروه",
 	"show_session_details": "نمایش جزئیات جلسه",
 	"request_otp_title": "ورود",
@@ -18,5 +18,9 @@
 	"group_information": "اطلاعات گروه",
 	"leave_session": "ترک جلسه",
 	"join_session": "پیوستن به جلسه",
-	"hello": "سلام"
+	"hello": "سلام",
+	"an_error_occurred": "خطایی رخ داده است",
+	"go_home": "بازگشت به صفحه اصلی",
+	"group_not_found": "گروه یافت نشد",
+	"upcoming_sessions": "جلسات آینده"
 }

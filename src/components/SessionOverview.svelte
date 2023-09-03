@@ -1,7 +1,8 @@
 <script lang="ts">
 	export let session: Session;
+	export let shouldShowGroupOverview: boolean = true;
 
-	// import { goto } from '$app/navigation';
+	import { goto } from '$app/navigation';
 	import { i18n } from '$lib/i18n';
 
 	// import { formattedDistance } from '$lib/format';
@@ -15,8 +16,7 @@
 	$: isJoined = session.users.findIndex((user) => user.id === $currentUser?.id) !== -1;
 
 	function onClickShowGroupDetails() {
-		alert('TODO: go to group details');
-		// goto(`/groups/${session.group.id}`)
+		goto(`/groups/${session.group.id}`);
 	}
 	function onClickJoinSession() {
 		alert('TODO: join session');
@@ -27,36 +27,43 @@
 </script>
 
 <article
-	class="relative grid grid-flow-row gap-x-4 gap-y-4 rounded-3xl bg-white p-4 drop-shadow-sm"
+	class="relative grid grid-flow-row gap-x-4 gap-y-4 rounded-3xl bg-white p-4 shadow-sm"
 	dir="auto"
 >
-	<div aria-label={$i18n.t('group_information')} class="grid justify-items-center gap-2">
-		<h2
-			class="w-full overflow-hidden text-ellipsis whitespace-nowrap text-center text-xl font-bold"
-			dir="auto"
+	{#if shouldShowGroupOverview}
+		<div
+			aria-label={$i18n.t('group_information')}
+			class="grid justify-items-center gap-2 border-b-[1px] py-4"
 		>
-			{session.group.title}
-		</h2>
-		<!--<Stars value={3.5} />-->
+			<h2
+				class="w-full overflow-hidden text-ellipsis whitespace-nowrap text-center text-xl font-bold"
+				dir="auto"
+			>
+				{session.group.title}
+			</h2>
+			<!--<Stars value={3.5} />-->
 
-		<!-- <div>{formattedDistance(+(session?.dist || 0))}<Location class="inline text-primary-500" /></div> -->
-		<!-- <address>{session.phone}</address> -->
-		<!--
+			<!-- <div>{formattedDistance(+(session?.dist || 0))}<Location class="inline text-primary-500" /></div> -->
+			<!-- <address>{session.phone}</address> -->
+			<!--
 		<img
 			src="/running.jpg"
 			alt=""
 			class="aspect-square h-32 self-center rounded-3xl object-cover"
 		/>
     -->
-		<p dir="auto" class="relative max-h-[140px] overflow-hidden">
-			{session.group.description}
-			<span class="absolute inset-0 h-full w-full bg-gradient-to-t from-white outline-black" />
-		</p>
-		<button on:click={onClickShowGroupDetails} class="text">{$i18n.t('show_group_details')}</button>
-	</div>
+			<p dir="auto" class="relative max-h-[140px] overflow-hidden indent-4">
+				{session.group.description}
+				<span class="absolute inset-0 h-full w-full bg-gradient-to-t from-white outline-black" />
+			</p>
+			<button on:click={onClickShowGroupDetails} class="text"
+				>{$i18n.t('show_group_details')}</button
+			>
+		</div>
+	{/if}
 	<div
 		aria-label={$i18n.t('session_information')}
-		class="h-full w-full space-y-4 border-t-[1px] px-2 py-4 text-sm"
+		class="h-full w-full space-y-4 px-2 py-4 text-sm"
 		dir="auto"
 	>
 		<p>

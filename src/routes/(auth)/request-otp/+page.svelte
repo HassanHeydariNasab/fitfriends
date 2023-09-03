@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { _ } from 'svelte-i18n';
 	import { PUBLIC_API_URL } from '$env/static/public';
 
 	import Logo from '@components/icons/logo.svelte';
-	import Loading from '@src/components/Loading.svelte';
+	import Loading from '@components/Loading.svelte';
 	import { goto } from '$app/navigation';
+	import { i18n } from '$lib/i18n';
 
 	let phoneNumber = '';
 	let isDisabled = true;
@@ -46,11 +46,11 @@
 	</div>
 	<!-- <h1 class="text-5xl font-bold">{$_('request_otp_title')}</h1> -->
 	<label>
-		<div class="mb-1 text-sm opacity-60">{$_('phone_number')}</div>
+		<div class="mb-1 text-sm opacity-60">{$i18n.t('phone_number')}</div>
 		<input bind:value={phoneNumber} type="tel" disabled={isLoading} />
 	</label>
 	<button disabled={isDisabled}>
-		{$_('login')}
+		{$i18n.t('login')}
 		{#if isLoading}
 			<Loading />
 		{/if}</button

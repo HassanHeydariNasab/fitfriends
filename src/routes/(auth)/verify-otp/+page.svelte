@@ -1,13 +1,12 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	//import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { PUBLIC_API_URL } from '$env/static/public';
-	import { _ } from 'svelte-i18n';
 
 	import Logo from '@components/icons/logo.svelte';
-	import Loading from '@src/components/Loading.svelte';
+	import Loading from '@components/Loading.svelte';
+	import { i18n } from '$lib/i18n';
 
-	const phoneNumber = $page.url.searchParams.get('phoneNumber');
+	const phoneNumber = $page.params.phoneNumber;
 	let code = '';
 	let isDisabled = true;
 	let isLoading = false;
@@ -15,22 +14,7 @@
 	$: isDisabled = !code.length || !phoneNumber?.length || isLoading;
 
 	function onSubmit() {
-		isLoading = true;
-		fetch(`${PUBLIC_API_URL}/v1/Signin/verify`, {
-			method: 'POST',
-			body: JSON.stringify({ phoneNumber, code }),
-			headers: { Authorization: 'Basic YWRtaW46UG9za3MyMUAh', 'Content-Type': 'application/json' }
-		})
-			.then((response) => {
-				if (response.status === 400) {
-					goto('/registration');
-				} else if (response.status === 200) {
-					goto('/verify-otp');
-				}
-			})
-			.finally(() => {
-				isLoading = false;
-			});
+		alert('TODO: verify OTP');
 	}
 </script>
 
@@ -43,13 +27,13 @@
 	<div class="w-full text-gray-800 transition-[rotate]" style:rotate={code.length * 90 + 'deg'}>
 		<Logo />
 	</div>
-	<!-- <h1 class="text-5xl font-bold">{$_('request_otp_title')}</h1> -->
+	<!-- <h1 class="text-5xl font-bold">{$i18n.t('request_otp_title')}</h1> -->
 	<label>
-		<div class="mb-1 text-sm opacity-60">{$_('code')}</div>
+		<div class="mb-1 text-sm opacity-60">{$i18n.t('code')}</div>
 		<input bind:value={code} type="tel" disabled={isLoading} />
 	</label>
 	<button disabled={isDisabled}>
-		{$_('confirm')}
+		{$i18n.t('confirm')}
 		{#if isLoading}
 			<Loading />
 		{/if}</button

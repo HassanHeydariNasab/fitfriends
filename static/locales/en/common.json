@@ -1,7 +1,7 @@
 {
-	"explore": "Find a Session",
+	"explore": "Explore",
 	"profile": "Profile",
-	"my_sessions": "My Sessions",
+	"my_sessions": "Schedule",
 	"show_group_details": "Show Group Details",
 	"show_session_details": "Show Session Details",
 	"request_otp_title": "Login",
@@ -18,5 +18,9 @@
 	"group_information": "Group Information",
 	"leave_session": "Leave Session",
 	"join_session": "Join Session",
-	"hello": "Hello"
+	"hello": "Hello",
+	"an_error_occurred": "An error occurred!",
+	"go_home": "Go Home",
+	"group_not_found": "Group not found",
+	"upcoming_sessions": "Upcoming Sessions"
 }
