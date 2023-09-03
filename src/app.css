@@ -17,13 +17,13 @@
 		@apply bg-gradient-to-tr from-orange-200 to-sky-400;
 	}
 	button:not([class^='mapbox']) {
-		@apply flex w-max items-center justify-center rounded-full bg-primary-500 px-6 py-[0.75em] text-sm font-semibold text-white transition-colors hover:bg-primary-600;
+		@apply flex w-max items-center justify-center rounded-full border-2 border-primary-400 bg-primary-500 px-6 py-[0.75em] text-sm font-semibold text-white transition-colors hover:bg-primary-600;
 	}
 	button.red {
 		@apply bg-red-500 hover:bg-red-600;
 	}
 	button.text {
-		@apply bg-transparent text-black transition-opacity hover:bg-transparent hover:text-black hover:opacity-70;
+		@apply border-none bg-transparent text-black transition-opacity hover:bg-transparent hover:text-black hover:opacity-70;
 	}
 	button.outlined {
 		@apply border-2 border-gray-700 bg-transparent text-gray-700 outline-offset-4 hover:bg-gray-700 hover:text-white;

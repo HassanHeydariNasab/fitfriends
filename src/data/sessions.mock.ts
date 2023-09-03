@@ -6,7 +6,7 @@ export const mockedSessions: Session[] = [
 	{
 		id: '1',
 		group: mockedGroups[0],
-		description: "Let's run together at Azadi Complex",
+		description: "Let's run together at Azadi Complex.",
 		users: [mockedUsers[0], mockedUsers[1]],
 		latitude: 35.7992447038,
 		longitude: 51.4408664171,
@@ -17,7 +17,7 @@ export const mockedSessions: Session[] = [
 	{
 		id: '2',
 		group: mockedGroups[0],
-		description: "Let's run together at Azadi Complex",
+		description: "Let's run together at Azadi Complex.",
 		users: [mockedUsers[1]],
 		latitude: 35.7992447038,
 		longitude: 51.4408664171,

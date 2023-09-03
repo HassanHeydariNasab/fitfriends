@@ -10,6 +10,7 @@
 	import { currentUser } from '@stores/auth';
 	import CalendarOutline from '@icons/calendar-outline.svelte';
 	import LocationOutline from '@icons/location-outline.svelte';
+	import QuillPenLine from './icons/quill-pen-line.svelte';
 
 	$: startAtDate = new Date(session.startAt);
 	$: endAtDate = new Date(session.endAt);
@@ -64,9 +65,8 @@
 	<div
 		aria-label={$i18n.t('session_information')}
 		class="h-full w-full space-y-4 px-2 py-4 text-sm"
-		dir="auto"
 	>
-		<p>
+		<p dir="auto">
 			<CalendarOutline class="me-2 inline text-gray-500" />
 			<time datetime={startAtDate.toISOString()}
 				>{startAtDate.toLocaleString($i18n.language, {
@@ -81,12 +81,22 @@
 				})}
 			</time>
 		</p>
-		<address>
+		<address dir="auto">
 			<LocationOutline class="me-2 inline text-gray-500" />
 			{session.address}
 		</address>
-
-		<button on:click={isJoined ? onClickLeaveSession : onClickJoinSession} class:outlined={isJoined}
+		{#if session.description}
+			<div dir="auto">
+				<QuillPenLine class="me-2 inline text-gray-500" />
+				<span>
+					{session.description}
+				</span>
+			</div>
+		{/if}
+		<button
+			dir="ltr"
+			on:click={isJoined ? onClickLeaveSession : onClickJoinSession}
+			class:outlined={isJoined}
 			>{isJoined ? $i18n.t('leave_session') : $i18n.t('join_session')}</button
 		>
 	</div>

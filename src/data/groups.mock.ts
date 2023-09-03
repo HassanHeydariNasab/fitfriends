@@ -13,7 +13,6 @@ export const mockedGroups: Group[] = [
 		id: '2',
 		title: 'بسکتبالیست‌های جنوب شرق',
 		description: 'ما جمعی از دلدادگان آستان جردن هستیم که جمعه‌ها در آستان جردن جک‌ور‌جک می‌کنیم.',
-
 		users: [mockedUsers[0], mockedUsers[1]]
 	}
 ];
