@@ -5,18 +5,14 @@
 
 	import { i18n } from '$lib/i18n';
 	import SessionOverview from '@components/SessionOverview.svelte';
+	import Header from '@components/Header.svelte';
 	import { mockedSessions } from '@data/sessions.mock';
 
 	$: sessions = mockedSessions.filter((session) => session.group.id === data.group?.id);
 </script>
 
 <main class="space-y-4 pb-4">
-	<h1
-		class="sticky top-0 z-40 bg-white bg-gradient-to-tr from-orange-100 to-sky-300 py-4 text-center text-lg font-semibold text-gray-800 shadow-lg"
-	>
-		<!-- TODO: back button -->
-		{data.group?.title}
-	</h1>
+	<Header title={data.group?.title} />
 	<div class="flex justify-center gap-4 px-4">
 		{#each data.group?.users || [] as user, index (user.id)}
 			<div class="text-center text-sm">
