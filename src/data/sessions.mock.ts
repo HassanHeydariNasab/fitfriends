@@ -17,11 +17,11 @@ export const mockedSessions: Session[] = [
 	{
 		id: '2',
 		group: mockedGroups[0],
-		description: "Let's run together at Azadi Complex.",
+		description: "Let's run together at Prison Complex.",
 		users: [mockedUsers[1]],
 		latitude: 35.7992447038,
 		longitude: 51.4408664171,
-		address: 'Azadi Complex',
+		address: 'Prison Complex',
 		startAt: 1635014000000,
 		endAt: 1635018400000
 	},

@@ -37,7 +37,7 @@
 			class="grid justify-items-center gap-2 border-b-[1px] py-4"
 		>
 			<h2
-				class="w-full overflow-hidden text-ellipsis whitespace-nowrap text-center text-xl font-bold"
+				class="w-full overflow-hidden text-ellipsis whitespace-nowrap text-center text-lg font-semibold"
 				dir="auto"
 			>
 				{session.group.title}
@@ -53,7 +53,7 @@
 			class="aspect-square h-32 self-center rounded-3xl object-cover"
 		/>
     -->
-			<p dir="auto" class="relative max-h-[140px] overflow-hidden indent-4">
+			<p dir="auto" class="relative max-h-[140px] overflow-hidden indent-4 text-sm">
 				{session.group.description}
 				<span class="absolute inset-0 h-full w-full bg-gradient-to-t from-white outline-black" />
 			</p>
