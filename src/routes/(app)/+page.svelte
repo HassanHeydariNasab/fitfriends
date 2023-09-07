@@ -29,11 +29,13 @@
 		mapComponent?.setCenter([lng, lat], zoom);
 		const language = new MapboxLanguage();
 		mapComponent?.getMap().addControl(language);
-		mapComponent
-			?.getMapbox()
-			.setRTLTextPlugin(
-				'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.2.3/mapbox-gl-rtl-text.js'
-			);
+		if (mapComponent?.getMapbox().getRTLTextPluginStatus() !== 'loaded') {
+			mapComponent
+				?.getMapbox()
+				.setRTLTextPlugin(
+					'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.2.3/mapbox-gl-rtl-text.js'
+				);
+		}
 
 		//mapComponent?.flyTo({ center: [lng, lat] }); // documentation (https://docs.mapbox.com/mapbox-gl-js/example/flyto)
 	}
