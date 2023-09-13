@@ -3,6 +3,7 @@ export interface User {
 	name: string;
 	avatarUrl: string;
 	bio: string;
+	tags: string[];
 	latitude: number;
 	longitude: number;
 }

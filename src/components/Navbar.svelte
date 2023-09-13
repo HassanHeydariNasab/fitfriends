@@ -22,7 +22,7 @@
 			class:active={$page.url.pathname === '/' && link.href === '/'
 				? true
 				: link.href !== '/' && $page.url.pathname.startsWith(link.href)}
-			class="flex flex-1 flex-col items-center gap-2 text-center text-sm font-semibold text-gray-500"
+			class="flex flex-1 flex-col items-center gap-2 text-center text-sm font-semibold text-gray-500 focus-visible:outline-dashed"
 		>
 			<svelte:component this={link.icon} />
 			{link.label}

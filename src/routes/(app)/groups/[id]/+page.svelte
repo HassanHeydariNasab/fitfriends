@@ -13,14 +13,21 @@
 
 <main class="space-y-4 pb-4">
 	<Header title={data.group?.title} />
+	<img
+		src={data.group.avatarUrl}
+		alt="Group Banner"
+		class="!mt-0 aspect-video max-h-[50vh] w-full object-cover shadow-md"
+	/>
 	<div class="flex justify-center gap-4 px-4">
 		{#each data.group?.users || [] as user, index (user.id)}
-			<div class="text-center text-sm">
+			<div class="space-y-4 text-center text-sm">
 				<img
 					src={user.avatarUrl}
 					alt={user.name}
-					class="h-32 w-32 object-contain pb-2 drop-shadow-sm"
-					class:border-primary-500={index === 0}
+					class="h-24 w-24 rounded-full border-2 bg-white object-contain drop-shadow-md"
+					class:border-yellow-500={index === 0}
+					class:border-gray-500={index === 1}
+					class:border-orange-500={index === 2}
 				/>
 				<span>{user.name}</span>
 			</div>
