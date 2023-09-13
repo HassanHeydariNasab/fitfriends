@@ -2,6 +2,7 @@
 	type Value = string | number;
 	export let options: { value: Value; label: string }[] = [];
 	export let value: Value;
+	export let buttonClass: string = '';
 
 	import { createEventDispatcher } from 'svelte';
 	import { createListbox } from 'svelte-headlessui';
@@ -24,12 +25,12 @@
 	<button
 		use:listbox.button
 		on:select={onSelect}
-		class="relative w-fit cursor-default rounded-lg bg-white !pr-3 text-left shadow-md sm:text-sm"
+		class="relative w-fit rounded-lg bg-white !pr-3 sm:text-sm {buttonClass}"
 	>
 		<span class="block truncate"
 			>{options.find((option) => $listbox.selected === option.value)?.label}</span
 		>
-		<Selector class="ml-2 h-5 w-5 text-white" />
+		<Selector class="ml-2 h-5 w-5" />
 	</button>
 
 	<Transition
@@ -46,7 +47,7 @@
 				{@const active = $listbox.active === option.value}
 				{@const selected = $listbox.selected === option.value}
 				<li
-					class="relative cursor-default select-none py-2 pl-10 pr-4 {active
+					class="relative cursor-pointer select-none py-2 pl-10 pr-4 {active
 						? 'bg-amber-100 text-amber-900'
 						: 'text-gray-900'}"
 					use:listbox.item={{ value: option.value }}

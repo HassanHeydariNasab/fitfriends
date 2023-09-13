@@ -18,8 +18,6 @@
 	}
 </script>
 
-<div class="flex-1" />
-
 <form
 	class="m-4 grid max-w-full items-center justify-center justify-items-center gap-6 self-center rounded-3xl bg-white p-4 pt-8 text-center drop-shadow-md transition-[filter] duration-500 focus-within:drop-shadow-2xl"
 	on:submit={onSubmit}
@@ -44,5 +42,3 @@
 		{/if}</button
 	>
 </form>
-
-<div class="flex-1" />
