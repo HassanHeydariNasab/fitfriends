@@ -1,5 +1,7 @@
 <script lang="ts">
 	export let buttonClass: string = '';
+	export let containerClass: string = '';
+
 	import { i18n } from '$lib/i18n';
 	import Select from '@components/Select.svelte';
 
@@ -17,4 +19,5 @@
 	value={$i18n.language}
 	on:select={onChangeLanguage}
 	{buttonClass}
+	{containerClass}
 />

@@ -9,7 +9,7 @@
 </script>
 
 <h1
-	class="sticky top-0 z-40 flex bg-white bg-gradient-to-tr from-orange-100 to-sky-300 py-4 text-center text-lg font-semibold text-gray-800 shadow-lg"
+	class="sticky top-0 z-40 flex py-4 text-center text-lg font-semibold text-gray-800 shadow-lg backdrop-blur"
 >
 	<button class="text !p-0" on:click={goBack}>
 		<ArrowLeft class="mx-4" />

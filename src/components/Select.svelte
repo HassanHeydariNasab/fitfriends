@@ -3,6 +3,7 @@
 	export let options: { value: Value; label: string }[] = [];
 	export let value: Value;
 	export let buttonClass: string = '';
+	export let containerClass: string = '';
 
 	import { createEventDispatcher } from 'svelte';
 	import { createListbox } from 'svelte-headlessui';
@@ -21,15 +22,15 @@
 	}
 </script>
 
-<div class="relative">
+<div class="relative {containerClass}">
 	<button
 		use:listbox.button
 		on:select={onSelect}
 		class="relative w-fit rounded-lg bg-white !pr-3 sm:text-sm {buttonClass}"
 	>
-		<span class="block truncate"
-			>{options.find((option) => $listbox.selected === option.value)?.label}</span
-		>
+		<span class="block truncate">
+			{options.find((option) => $listbox.selected === option.value)?.label}
+		</span>
 		<Selector class="ml-2 h-5 w-5" />
 	</button>
 
@@ -41,7 +42,7 @@
 	>
 		<ul
 			use:listbox.items
-			class="absolute mt-1 max-h-60 w-fit overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+			class="absolute z-10 mt-1 max-h-60 w-fit overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
 		>
 			{#each options as option}
 				{@const active = $listbox.active === option.value}
@@ -52,9 +53,9 @@
 						: 'text-gray-900'}"
 					use:listbox.item={{ value: option.value }}
 				>
-					<span class="block truncate {selected ? 'font-medium' : 'font-normal'}"
-						>{option.label}</span
-					>
+					<span class="block truncate {selected ? 'font-medium' : 'font-normal'}">
+						{option.label}
+					</span>
 					{#if selected}
 						<span class="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
 							<Check class="h-5 w-5" />

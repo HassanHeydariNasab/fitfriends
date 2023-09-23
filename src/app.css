@@ -7,6 +7,8 @@
 * {
 	font-family: 'Poppins', 'Vazirmatn', cursive !important;
 	@apply accent-primary-500;
+	-ms-overflow-style: none; /* Internet Explorer 10+ */
+	scrollbar-width: none; /* Firefox */
 }
 
 @layer base {
@@ -17,7 +19,7 @@
 	body {
 		@apply bg-gradient-to-tr from-orange-200 to-sky-400;
 	}
-	button:not([class^='mapbox']) {
+	button:not([class^='mapbox'], [class*='reset']) {
 		@apply flex w-max items-center justify-center rounded-full border-2 border-primary-400 bg-primary-500 px-6 py-[0.75em] text-sm font-semibold text-white outline-offset-4 transition-colors hover:bg-primary-600 focus-visible:outline-dashed focus-visible:outline-primary-500 disabled:cursor-not-allowed disabled:border-gray-300 disabled:bg-gray-300 disabled:hover:border-gray-300 disabled:hover:bg-gray-300;
 	}
 	button.red {
@@ -44,5 +46,8 @@
 	}
 	span.tag {
 		@apply inline-flex items-center justify-center rounded-full bg-gray-100 px-2 py-1 text-xs font-semibold text-gray-700;
+	}
+	::-webkit-scrollbar {
+		display: none; /* Safari and Chrome */
 	}
 }
