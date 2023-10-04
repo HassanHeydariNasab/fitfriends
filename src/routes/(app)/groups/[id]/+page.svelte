@@ -14,7 +14,7 @@
 <main class="space-y-4 pb-4">
 	<Header title={data.group?.title} />
 	<img
-		src={data.group.avatarUrl}
+		src={data.group.imageUrl}
 		alt="Group Banner"
 		class="!mt-0 aspect-video max-h-[50vh] w-full object-cover shadow-md"
 	/>

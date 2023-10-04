@@ -26,7 +26,7 @@
 	<button
 		use:listbox.button
 		on:select={onSelect}
-		class="relative w-fit rounded-lg bg-white !pr-3 sm:text-sm {buttonClass}"
+		class="relative w-fit select-none rounded-lg !pr-3 sm:text-sm {buttonClass}"
 	>
 		<span class="block truncate">
 			{options.find((option) => $listbox.selected === option.value)?.label}

@@ -22,5 +22,9 @@
 	"an_error_occurred": "خطایی رخ داده است",
 	"go_home": "بازگشت به صفحه اصلی",
 	"group_not_found": "گروه یافت نشد",
-	"upcoming_sessions": "جلسات آینده"
+	"upcoming_sessions": "جلسات آینده",
+	"create_group": "ایجاد گروه",
+	"title": "عنوان",
+	"description": "توضیحات",
+	"image": "تصویر"
 }

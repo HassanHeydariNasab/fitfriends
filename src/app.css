@@ -20,7 +20,7 @@
 		@apply bg-gradient-to-tr from-orange-200 to-sky-400;
 	}
 	button:not([class^='mapbox'], [class*='reset']) {
-		@apply flex w-max items-center justify-center rounded-full border-2 border-primary-400 bg-primary-500 px-6 py-[0.75em] text-sm font-semibold text-white outline-offset-4 transition-colors hover:bg-primary-600 focus-visible:outline-dashed focus-visible:outline-primary-500 disabled:cursor-not-allowed disabled:border-gray-300 disabled:bg-gray-300 disabled:hover:border-gray-300 disabled:hover:bg-gray-300;
+		@apply flex w-max items-center justify-center rounded-full border-2 border-primary-400 bg-primary-500 px-6 py-[0.75em] text-sm font-semibold text-black outline-offset-4 transition-colors hover:bg-primary-600 focus-visible:outline-dashed focus-visible:outline-primary-500 disabled:cursor-not-allowed disabled:border-gray-300 disabled:bg-gray-300 disabled:hover:border-gray-300 disabled:hover:bg-gray-300;
 	}
 	button.red {
 		@apply bg-red-500 hover:bg-red-600;
@@ -35,8 +35,11 @@
 	input[type='radio'] {
 		@apply cursor-pointer;
 	}
-	input:not([type='checkbox']):not([type='radio']) {
+	input:not([type='checkbox'], [type='radio']) {
 		@apply w-full rounded-md bg-gray-100 px-3 py-3 font-semibold text-gray-900 shadow-inner outline outline-2 outline-transparent transition-[outline-color] focus-visible:outline-primary-500;
+	}
+	textarea {
+		@apply w-full rounded-md bg-gray-100 px-3 py-3 font-medium text-gray-900 shadow-inner outline outline-2 outline-transparent transition-[outline-color] focus-visible:outline-primary-500;
 	}
 	label {
 		@apply font-semibold;
@@ -49,5 +52,8 @@
 	}
 	::-webkit-scrollbar {
 		display: none; /* Safari and Chrome */
+	}
+	.label {
+		@apply mb-1 text-sm opacity-60;
 	}
 }
