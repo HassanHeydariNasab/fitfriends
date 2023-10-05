@@ -8,8 +8,8 @@ export const mockedSessions: Session[] = [
 		group: mockedGroups[0],
 		description: "Let's run together at Azadi Complex.",
 		users: [mockedUsers[0], mockedUsers[1]],
-		latitude: 35.78,
-		longitude: 51.45,
+		latitude: 35.798,
+		longitude: 51.441,
 		address: 'Azadi Complex',
 		startAt: 1625014800000,
 		endAt: 1625018400000
