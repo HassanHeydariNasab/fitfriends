@@ -8,8 +8,8 @@ export const mockedSessions: Session[] = [
 		group: mockedGroups[0],
 		description: "Let's run together at Azadi Complex.",
 		users: [mockedUsers[0], mockedUsers[1]],
-		latitude: 35.7992447038,
-		longitude: 51.4408664171,
+		latitude: 35.78,
+		longitude: 51.45,
 		address: 'Azadi Complex',
 		startAt: 1625014800000,
 		endAt: 1625018400000
@@ -19,8 +19,8 @@ export const mockedSessions: Session[] = [
 		group: mockedGroups[0],
 		description: "Let's run together at Prison Complex.",
 		users: [mockedUsers[1]],
-		latitude: 35.7992447038,
-		longitude: 51.4408664171,
+		latitude: 35.79,
+		longitude: 51.43,
 		address: 'Prison Complex',
 		startAt: 1635014000000,
 		endAt: 1635018400000
@@ -30,8 +30,8 @@ export const mockedSessions: Session[] = [
 		group: mockedGroups[1],
 		description: 'وضو فراموش نشود.',
 		users: [mockedUsers[0], mockedUsers[1]],
-		latitude: 35.7992447048,
-		longitude: 51.4408664181,
+		latitude: 35.8,
+		longitude: 51.44,
 		address: 'آستان جردن',
 		startAt: 1665014000000,
 		endAt: 1675018400000
