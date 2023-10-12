@@ -8,6 +8,7 @@
 	import Header from '@components/Header.svelte';
 	import { mockedSessions } from '@data/sessions.mock';
 	import Pencil from '@components/icons/pencil.svelte';
+	import Plus from '@components/icons/plus.svelte';
 
 	const administratedGroupsIds = ['1'];
 
@@ -16,17 +17,18 @@
 	$: sessions = mockedSessions.filter((session) => session.group.id === data.group?.id);
 </script>
 
-<main class="space-y-4 pb-4">
-	<Header title={data.group?.title}>
-		<a
-			slot="right"
-			class="text me-4 !p-0"
-			class:!hidden={!isAdmin}
-			href="/edit-group/{data.group?.id}"
-		>
-			<Pencil width="1rem" />
-		</a>
-	</Header>
+<Header title={data.group?.title}>
+	<a
+		slot="right"
+		class="text me-4 !p-0"
+		class:!hidden={!isAdmin}
+		href="/edit-group/{data.group?.id}"
+	>
+		<Pencil width="1rem" />
+	</a>
+</Header>
+
+<main class="flex flex-col gap-4">
 	<img
 		src={data.group.imageUrl}
 		alt="Group Banner"
@@ -47,12 +49,25 @@
 			</div>
 		{/each}
 	</div>
-	<p dir="auto" class="bg-white px-4 pb-4 pt-2 indent-4 shadow-sm first-letter:text-3xl">
+	<p
+		dir="auto"
+		class="break-words bg-white px-4 pb-4 pt-2 indent-4 shadow-sm first-letter:text-3xl"
+	>
 		{data.group?.description}
 	</p>
-	<h2 dir="auto" class="ps-8 pt-4 font-light text-gray-600 drop-shadow-md">
-		{$i18n.t('upcoming_sessions')}
-	</h2>
+	<div class="flex flex-wrap items-center justify-between gap-4 px-8 pt-4" dir="auto">
+		<h2 dir="auto" class="text-sm font-semibold text-gray-700 drop-shadow-md">
+			{$i18n.t('upcoming_sessions')}
+		</h2>
+		{#if isAdmin}
+			<a href="/create-session">
+				<button class="outlined !py-1 !pe-4 !ps-3">
+					<Plus class="me-1 w-[1em]" />
+					{$i18n.t('create_session')}
+				</button>
+			</a>
+		{/if}
+	</div>
 	<div class="space-y-4 px-4">
 		{#each sessions as session}
 			<SessionOverview {session} shouldShowGroupOverview={false} />

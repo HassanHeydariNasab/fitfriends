@@ -1,4 +1,5 @@
 {
+	"app_name": "FitFriends",
 	"explore": "Explore",
 	"profile": "Profile",
 	"my_sessions": "Schedule",
@@ -27,5 +28,6 @@
 	"edit_group": "Edit Group",
 	"title": "Title",
 	"description": "Description",
-	"image": "Image"
+	"image": "Image",
+	"create_session": "Create Session"
 }

@@ -12,12 +12,13 @@
 }
 
 @layer base {
-	html,
-	body {
-		height: calc(100vh - calc(100vh - 100%));
+	html {
+		position: relative;
 	}
 	body {
-		@apply bg-gradient-to-tr from-orange-200 to-sky-400;
+		@apply flex flex-col gap-4 overflow-y-auto bg-gradient-to-tr from-orange-200 to-sky-400;
+		min-height: calc(100vh - calc(100vh - 100%));
+		min-height: 100dvh;
 	}
 	button:not([class^='mapbox'], [class*='reset']) {
 		@apply flex w-max items-center justify-center rounded-full border-2 border-primary-400 bg-primary-500 px-6 py-[0.75em] text-sm font-semibold text-black outline-offset-4 transition-colors hover:bg-primary-600 focus-visible:outline-dashed focus-visible:outline-primary-500 disabled:cursor-not-allowed disabled:border-gray-300 disabled:bg-gray-300 disabled:hover:border-gray-300 disabled:hover:bg-gray-300;

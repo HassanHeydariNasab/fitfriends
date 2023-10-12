@@ -10,7 +10,9 @@
 	const groups = [...mockedGroups, ...mockedGroups, ...mockedGroups];
 </script>
 
-<main class="flex min-h-full flex-col gap-4 py-4">
+<svelte:head><title>{$i18n.t('app_name')} | {$i18n.t('profile')}</title></svelte:head>
+
+<main class="flex flex-col gap-4 pt-4">
 	{#if $currentUser}
 		<div class="px-4">
 			<Profile user={$currentUser} isMyUser />

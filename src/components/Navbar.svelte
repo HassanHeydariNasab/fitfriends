@@ -14,11 +14,12 @@
 </script>
 
 <nav
-	class="drop-shadow-3xl z-20 flex justify-around bg-gradient-to-t from-gray-900 to-gray-700 p-4"
+	class="sticky bottom-0 z-20 mt-auto flex justify-around bg-gradient-to-t from-gray-900 to-gray-700 p-4"
 >
 	{#each links as link}
 		<a
 			href={link.href}
+			data-sveltekit-replacestate
 			class:active={$page.url.pathname === '/' && link.href === '/'
 				? true
 				: link.href !== '/' && $page.url.pathname.startsWith(link.href)}

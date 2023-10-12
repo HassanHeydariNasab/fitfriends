@@ -20,7 +20,7 @@
 </script>
 
 <form
-	class="grid max-w-full items-center justify-items-center gap-6 rounded-3xl bg-white p-4 pt-8 text-center drop-shadow-md transition-[filter] duration-500 focus-within:drop-shadow-2xl"
+	class="m-4 grid max-w-full items-center justify-items-center gap-6 rounded-3xl bg-white p-4 pt-8 text-center drop-shadow-md transition-[filter] duration-500 focus-within:drop-shadow-2xl"
 	on:submit={onSubmit}
 >
 	<label class="w-full">
