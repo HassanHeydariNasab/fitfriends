@@ -13,8 +13,8 @@
 
 <Select
 	options={[
-		{ value: 'en-US', label: 'English' },
-		{ value: 'fa-IR', label: 'فارسی' }
+		{ value: 'en', label: 'English' },
+		{ value: 'fa', label: 'فارسی' }
 	]}
 	value={$i18n.language}
 	on:select={onChangeLanguage}
