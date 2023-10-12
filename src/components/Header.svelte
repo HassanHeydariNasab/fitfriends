@@ -8,7 +8,7 @@
 	}
 </script>
 
-<h1
+<header
 	class="sticky top-0 z-40 flex py-4 text-center text-lg font-semibold text-gray-800 shadow-lg backdrop-blur"
 >
 	<button class="text !p-0" on:click={goBack}>
@@ -17,4 +17,5 @@
 	<span dir="auto" class="me-auto ms-4">
 		{title}
 	</span>
-</h1>
+	<slot name="right" />
+</header>

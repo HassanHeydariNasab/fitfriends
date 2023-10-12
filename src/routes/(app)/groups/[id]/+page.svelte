@@ -7,12 +7,26 @@
 	import SessionOverview from '@components/SessionOverview.svelte';
 	import Header from '@components/Header.svelte';
 	import { mockedSessions } from '@data/sessions.mock';
+	import Pencil from '@components/icons/pencil.svelte';
+
+	const administratedGroupsIds = ['1'];
+
+	$: isAdmin = administratedGroupsIds.includes(data.group?.id);
 
 	$: sessions = mockedSessions.filter((session) => session.group.id === data.group?.id);
 </script>
 
 <main class="space-y-4 pb-4">
-	<Header title={data.group?.title} />
+	<Header title={data.group?.title}>
+		<a
+			slot="right"
+			class="text me-4 !p-0"
+			class:!hidden={!isAdmin}
+			href="/edit-group/{data.group?.id}"
+		>
+			<Pencil width="1rem" />
+		</a>
+	</Header>
 	<img
 		src={data.group.imageUrl}
 		alt="Group Banner"
