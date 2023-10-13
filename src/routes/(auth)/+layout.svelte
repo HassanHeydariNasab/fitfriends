@@ -1,5 +1,4 @@
 <script>
-	import '@src/app.css';
 	import SelectLanguage from '@components/SelectLanguage.svelte';
 </script>
 

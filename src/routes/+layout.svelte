@@ -3,6 +3,8 @@
 	import i18next from 'i18next';
 	import { browser } from '$app/environment';
 
+	import '@src/app.css';
+
 	onMount(() => {
 		if (browser) {
 			const language = i18next.language;
