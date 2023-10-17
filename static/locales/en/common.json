@@ -29,5 +29,27 @@
 	"title": "Title",
 	"description": "Description",
 	"image": "Image",
-	"create_session": "Create Session"
+	"create_session": "Create Session",
+	"join_group": "Join Group",
+	"leave_group": "Leave Group",
+	"members_one": "{{count, number}} member",
+	"members_other": "{{count, number}} members",
+
+	"address": "Address",
+	"location": "Location",
+	"date": "Date",
+	"recurrence": "Recurrence",
+	"once": "Once",
+	"weekly": "Weekly",
+	"saturday": "Saturday",
+	"sunday": "Sunday",
+	"monday": "Monday",
+	"tuesday": "Tuesday",
+	"wednesday": "Wednesday",
+	"thursday": "Thursday",
+	"friday": "Friday",
+	"start_date": "Start Date",
+	"end_date": "End Date",
+	"start_time": "Start Time",
+	"end_time": "End Time"
 }

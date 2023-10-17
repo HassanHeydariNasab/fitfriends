@@ -57,9 +57,9 @@
 				{session.group.description}
 				<span class="absolute inset-0 h-full w-full bg-gradient-to-t from-white outline-black" />
 			</p>
-			<button on:click={onClickShowGroupDetails} class="text"
-				>{$i18n.t('show_group_details')}</button
-			>
+			<button type="button" on:click={onClickShowGroupDetails} class="text">
+				{$i18n.t('show_group_details')}
+			</button>
 		</div>
 	{/if}
 	<div
@@ -68,8 +68,8 @@
 	>
 		<p dir="auto">
 			<CalendarOutline class="me-2 inline text-gray-500" />
-			<time datetime={startAtDate.toISOString()}
-				>{startAtDate.toLocaleString($i18n.language, {
+			<time datetime={startAtDate.toISOString()}>
+				{startAtDate.toLocaleString($i18n.language, {
 					dateStyle: 'full',
 					timeStyle: 'short'
 				})}
@@ -95,9 +95,11 @@
 		{/if}
 		<button
 			dir="ltr"
+			type="button"
 			on:click={isJoined ? onClickLeaveSession : onClickJoinSession}
 			class:outlined={isJoined}
-			>{isJoined ? $i18n.t('leave_session') : $i18n.t('join_session')}</button
 		>
+			{isJoined ? $i18n.t('leave_session') : $i18n.t('join_session')}
+		</button>
 	</div>
 </article>

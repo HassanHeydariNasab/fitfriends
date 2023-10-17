@@ -1,10 +1,19 @@
 <script lang="ts">
+	import type { MouseEventHandler } from 'svelte/elements';
+
 	export let name: string;
+	export let isAlternative: boolean = false;
+	export let onClick: MouseEventHandler<HTMLButtonElement> | undefined = undefined;
 </script>
 
 <button
-	class="mapbox relative h-12 w-12 rounded-full bg-primary-500 p-2 transition-all duration-300 hover:bg-primary-500 hover:drop-shadow-lg"
-	on:click
+	class="reset relative h-12 w-12 rounded-full bg-primary-500 p-2 transition-all duration-300 hover:bg-primary-500"
+	class:hover:drop-shadow-lg={onClick}
+	class:bg-red-500={isAlternative}
+	class:hover:bg-red-500={isAlternative}
+	class:!cursor-crosshair={isAlternative || !onClick}
+	type="button"
+	on:click={onClick}
 >
 	<div
 		dir="auto"
@@ -16,5 +25,8 @@
 	</div>
 	<img src="/favicon.svg" alt="" />
 	<!--<div class="h-full w-full rounded-full bg-primary-600" />-->
-	<div class="absolute bottom-[-0.3rem] right-4 z-[-1] h-4 w-4 rotate-45 bg-primary-500" />
+	<div
+		class:bg-red-500={isAlternative}
+		class="absolute bottom-[-0.3rem] right-4 z-[-1] h-4 w-4 rotate-45 bg-primary-500"
+	/>
 </button>

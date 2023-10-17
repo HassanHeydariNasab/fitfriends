@@ -30,8 +30,8 @@ export const mockedSessions: Session[] = [
 		group: mockedGroups[1],
 		description: 'وضو فراموش نشود.',
 		users: [mockedUsers[0], mockedUsers[1]],
-		latitude: 35.8,
-		longitude: 51.44,
+		latitude: 35.81,
+		longitude: 51.45,
 		address: 'آستان جردن',
 		startAt: 1665014000000,
 		endAt: 1675018400000

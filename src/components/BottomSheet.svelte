@@ -15,7 +15,11 @@
 	in:slide
 	out:slide
 >
-	<button class="m-1 mb-0 cursor-pointer self-end border-none !bg-transparent" on:click={close}>
+	<button
+		type="button"
+		class="m-1 mb-0 cursor-pointer self-end border-none !bg-transparent"
+		on:click={close}
+	>
 		<CloseCircle class="text-gray-700 transition-colors hover:text-gray-900" />
 	</button>
 	<div class="p-4">

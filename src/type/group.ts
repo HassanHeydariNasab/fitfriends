@@ -6,4 +6,5 @@ export interface Group {
 	description: string;
 	imageUrl: string;
 	users: Partial<User>[];
+	usersCount: number;
 }

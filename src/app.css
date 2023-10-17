@@ -45,6 +45,10 @@
 	label {
 		@apply font-semibold;
 	}
+	label.checkbox,
+	label.radio {
+		@apply flex cursor-pointer items-center gap-2;
+	}
 	a {
 		@apply transition-opacity hover:opacity-70;
 	}
@@ -55,6 +59,6 @@
 		display: none; /* Safari and Chrome */
 	}
 	.label {
-		@apply mb-1 text-sm opacity-60;
+		@apply mb-1 text-sm font-semibold opacity-60;
 	}
 }
