@@ -1,9 +1,9 @@
 import { error } from '@sveltejs/kit';
 
-import type { PageLoad } from './$types';
+import type { LayoutLoad } from './$types';
 import { mockedGroups } from '@data/groups.mock';
 
-export const load: PageLoad = ({ params }) => {
+export const load: LayoutLoad = ({ params }) => {
 	const group = mockedGroups.find((group) => group.id === params.id);
 	if (!group) {
 		throw error(404, 'group_not_found');

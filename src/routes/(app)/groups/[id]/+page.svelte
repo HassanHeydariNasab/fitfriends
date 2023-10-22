@@ -10,10 +10,9 @@
 	import SessionOverview from '@components/SessionOverview.svelte';
 	import Pencil from '@components/icons/pencil.svelte';
 	import Plus from '@components/icons/plus.svelte';
+	import { administratedGroupsIds } from '@stores/auth';
 
-	const administratedGroupsIds = ['1'];
-
-	$: isAdmin = administratedGroupsIds.includes(data.group?.id);
+	$: isAdmin = $administratedGroupsIds.includes(data.group?.id);
 
 	$: sessions = mockedSessions.filter((session) => session.group.id === data.group?.id);
 </script>
@@ -42,6 +41,7 @@
 			{$i18n.t('members', { count: data.group?.usersCount || 0 })}
 		</span>
 	</div>
+
 	<div class="flex justify-center gap-4 px-4">
 		{#each data.group?.users || [] as user, index (user.id)}
 			<div class="space-y-4 text-center text-sm">
@@ -57,14 +57,16 @@
 			</div>
 		{/each}
 	</div>
+
 	<p
 		dir="auto"
 		class="break-words bg-white px-4 pb-4 pt-2 indent-4 shadow-sm first-letter:text-3xl"
 	>
 		{data.group?.description}
 	</p>
-	<div class="flex flex-wrap items-center justify-between gap-4 px-8 pt-4" dir="auto">
-		<h2 dir="auto" class="text-sm font-semibold text-gray-700 drop-shadow-md">
+
+	<div class="flex flex-wrap items-center gap-4 px-8 pt-4" dir="auto">
+		<h2 dir="auto" class="me-auto text-sm font-semibold text-gray-700 drop-shadow-md">
 			{$i18n.t('upcoming_sessions')}
 		</h2>
 		{#if isAdmin}
@@ -76,6 +78,7 @@
 			</a>
 		{/if}
 	</div>
+
 	<div class="space-y-4 px-4">
 		{#each sessions as session}
 			<SessionOverview {session} shouldShowGroupOverview={false} />

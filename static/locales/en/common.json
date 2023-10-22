@@ -30,6 +30,7 @@
 	"description": "Description",
 	"image": "Image",
 	"create_session": "Create Session",
+	"edit_session": "Edit Session",
 	"join_group": "Join Group",
 	"leave_group": "Leave Group",
 	"members_one": "{{count, number}} member",

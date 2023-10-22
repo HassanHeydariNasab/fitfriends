@@ -30,6 +30,7 @@
 	"description": "توضیحات",
 	"image": "تصویر",
 	"create_session": "ایجاد جلسه",
+	"edit_session": "ویرایش جلسه",
 	"join_group": "پیوستن به گروه",
 	"leave_group": "ترک گروه",
 	"members_one": "{{count, number}} عضو",

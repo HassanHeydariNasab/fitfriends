@@ -42,7 +42,7 @@
 
 	$: {
 		if (session?.latitude && session?.longitude) {
-			mapComponent.setCenter(session.latitude, session.longitude);
+			mapComponent?.setCenter(session.latitude, session.longitude);
 		}
 	}
 
