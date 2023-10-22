@@ -11,7 +11,7 @@
 	const { GeolocateControl, NavigationControl, ScaleControl } = controls;
 	import MapboxLanguage from '@mapbox/mapbox-gl-language';
 
-	import { i18n } from '$lib/i18n';
+	//import { i18n } from '$lib/i18n';
 	import CusotmMarker from '@components/Marker.svelte';
 	import BottomSheet from '@components/BottomSheet.svelte';
 	import SessionOverview from '@components/SessionOverview.svelte';
@@ -77,8 +77,6 @@
 		selectedSessionId = undefined;
 	}
 </script>
-
-<svelte:head><title>{$i18n.t('app_name')} | {$i18n.t('explore')}</title></svelte:head>
 
 <Map
 	accessToken={PUBLIC_MAPBOX_TOKEN}
