@@ -20,9 +20,10 @@
 <Header title={data.group?.title}>
 	<a
 		slot="right"
-		class="text me-4 !p-0"
+		class="me-4"
 		class:!hidden={!isAdmin}
 		href="/edit-group/{data.group?.id}"
+		title={$i18n.t('edit_group')}
 	>
 		<Pencil width="1rem" />
 	</a>

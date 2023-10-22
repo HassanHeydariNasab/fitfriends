@@ -36,6 +36,8 @@
 	"members_one": "{{count, number}} member",
 	"members_other": "{{count, number}} members",
 
+	"back": "Back",
+
 	"address": "Address",
 	"location": "Location",
 	"date": "Date",
@@ -52,5 +54,8 @@
 	"start_date": "Start Date",
 	"end_date": "End Date",
 	"start_time": "Start Time",
-	"end_time": "End Time"
+	"end_time": "End Time",
+
+	"change_profile_picture": "Change your profile picture",
+	"edit_profile_name": "Edit your name"
 }

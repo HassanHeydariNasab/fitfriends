@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { User } from '@type/user';
+	import { i18n } from '$lib/i18n';
 	import Pencil from '@icons/pencil.svelte';
 	import Camera from '@icons/camera.svelte';
 
@@ -20,6 +21,7 @@
 		{#if isMyUser}
 			<button
 				class="reset absolute inset-0 flex items-center justify-center rounded-full opacity-0 transition-all hover:opacity-100 hover:backdrop-blur focus:opacity-100 focus:backdrop-blur"
+				title={$i18n.t('change_profile_picture')}
 			>
 				<Camera />
 			</button>
@@ -28,7 +30,10 @@
 	<span class="text-center text-sm">
 		{user.name}
 		{#if isMyUser}
-			<button class="reset transition-opacity hover:opacity-70">
+			<button
+				class="text !inline !px-1 !py-1 transition-opacity hover:opacity-70"
+				title={$i18n.t('edit_profile_name')}
+			>
 				<Pencil class="inline h-4 w-4" />
 			</button>
 		{/if}

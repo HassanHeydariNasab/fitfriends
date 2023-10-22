@@ -104,8 +104,12 @@
 				{isJoined ? $i18n.t('leave_session') : $i18n.t('join_session')}
 			</button>
 			{#if $administratedGroupsIds.includes(session.group.id)}
-				<a href="/groups/{session.group.id}/sessions/{session.id}/edit-session">
-					<button type="button" class="icon"><Pencil width="1rem" /></button>
+				<a
+					href="/groups/{session.group.id}/sessions/{session.id}/edit-session"
+					title={$i18n.t('edit_session')}
+					class="icon-button"
+				>
+					<Pencil width="1rem" />
 				</a>
 			{/if}
 		</div>

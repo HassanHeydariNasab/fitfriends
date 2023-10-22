@@ -35,6 +35,9 @@
 	"leave_group": "ترک گروه",
 	"members_one": "{{count, number}} عضو",
 	"members_other": "{{count, number}} عضو",
+
+	"back": "بازگشت",
+
 	"address": "نشانی",
 	"location": "مکان",
 	"date": "تاریخ",
@@ -51,5 +54,8 @@
 	"start_date": "تاریخ شروع",
 	"end_date": "تاریخ پایان",
 	"start_time": "زمان شروع",
-	"end_time": "زمان پایان"
+	"end_time": "زمان پایان",
+
+	"change_profile_picture": "تغییر تصویر پروفایل",
+	"edit_profile_name": "ویرایش نام پروفایل"
 }

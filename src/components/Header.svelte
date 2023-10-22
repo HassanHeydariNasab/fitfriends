@@ -14,7 +14,7 @@
 <header
 	class="sticky top-0 z-40 flex py-4 text-center text-lg font-semibold text-gray-800 shadow-lg backdrop-blur"
 >
-	<button class="text !p-0" on:click={goBack}>
+	<button class="text !p-0" on:click={goBack} title={$i18n.t('back')}>
 		<ArrowLeft class="mx-4" />
 	</button>
 	<span dir="auto" class="me-auto ms-4">
