@@ -2,6 +2,7 @@
 	type Value = string | number;
 	export let options: { value: Value; label: string }[] = [];
 	export let value: Value;
+	export let label: string | undefined = undefined;
 	export let buttonClass: string = '';
 	export let containerClass: string = '';
 
@@ -12,7 +13,7 @@
 	import Selector from '@icons/selector.svelte';
 	import Check from '@icons/check.svelte';
 
-	const listbox = createListbox({ label: 'Actions', selected: value });
+	const listbox = createListbox({ label, selected: value });
 
 	const dispatch = createEventDispatcher();
 
@@ -20,16 +21,21 @@
 		// we don't forward the event, so we have better control over the event and typing.
 		dispatch('select', (event as CustomEvent).detail);
 	}
+
+	$: selectedLabel = options.find((option) => $listbox.selected === option.value)?.label;
 </script>
 
 <div class="relative {containerClass}">
+	{#if label}
+		<div class="mb-1 w-full text-center text-sm font-semibold opacity-60">{label}</div>
+	{/if}
 	<button
 		use:listbox.button
 		on:select={onSelect}
 		class="relative w-fit select-none rounded-lg !pr-3 sm:text-sm {buttonClass}"
 	>
 		<span class="block truncate">
-			{options.find((option) => $listbox.selected === option.value)?.label}
+			{selectedLabel}
 		</span>
 		<Selector class="ml-2 h-5 w-5" />
 	</button>
