@@ -23,7 +23,7 @@
 		<span />
 		<a
 			href="/create-group"
-			class="grid w-64 select-none place-content-center justify-items-center rounded-3xl bg-primary-500 text-center text-lg font-semibold text-primary-700 shadow-md outline-offset-2 transition-[box-shadow] hover:opacity-100 hover:shadow-lg"
+			class="grid w-64 select-none snap-center place-content-center justify-items-center rounded-3xl bg-primary-500 text-center text-lg font-semibold text-primary-700 shadow-md outline-offset-2 transition-[box-shadow] hover:opacity-100 hover:shadow-lg"
 			draggable="false"
 		>
 			<Plus class="block" />

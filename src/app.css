@@ -14,9 +14,10 @@
 @layer base {
 	html {
 		position: relative;
+		@apply bg-gradient-to-tr from-orange-200 to-sky-400;
 	}
 	body {
-		@apply flex flex-col gap-4  bg-gradient-to-tr from-orange-200 to-sky-400;
+		@apply flex flex-col gap-4;
 		min-height: calc(100vh - calc(100vh - 100%));
 		min-height: 100dvh;
 	}

@@ -57,5 +57,9 @@
 	"end_time": "End Time",
 
 	"change_profile_picture": "Change your profile picture",
-	"edit_profile_name": "Edit your name"
+	"edit_profile_name": "Edit your name",
+
+	"confirmation_description": "Let's see who was in the session.",
+	"present": "Present",
+	"absent": "Absent"
 }

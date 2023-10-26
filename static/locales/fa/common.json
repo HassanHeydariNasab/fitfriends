@@ -57,5 +57,9 @@
 	"end_time": "زمان پایان",
 
 	"change_profile_picture": "تغییر تصویر پروفایل",
-	"edit_profile_name": "ویرایش نام پروفایل"
+	"edit_profile_name": "ویرایش نام پروفایل",
+
+	"confirmation_description": "بریم ببینیم کی بود کی نبود.",
+	"present": "حاضر",
+	"absent": "غایب"
 }
