@@ -1,6 +1,16 @@
+# node_modules
+fe/node_modules
+be/node_modules
+
 # compiled output
-/dist
-/node_modules
+be/dist
+fe/build
+
+# Svelte
+fe/.svelte-kit
+fe/package
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
 
 # Logs
 logs
@@ -15,11 +25,11 @@ lerna-debug.log*
 .DS_Store
 
 # Tests
-/coverage
-/.nyc_output
+be/coverage
+be/.nyc_output
 
 # IDEs and editors
-/.idea
+.idea
 .project
 .classpath
 .c9/
@@ -36,5 +46,5 @@ lerna-debug.log*
 
 # env
 .env
-.env.dev
-.env.prod
+.env.*
+!.env.example
