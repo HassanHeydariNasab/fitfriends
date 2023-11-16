@@ -1,0 +1,94 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Session {
+  id: ID!
+  description: String
+  latitude: Float
+  longitude: Float
+  address: String
+  startAt: DateTime!
+  endAt: DateTime!
+  group: Group!
+  participants: [User!]!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Group {
+  id: ID!
+  name: String!
+  description: String!
+  coverUrl: String
+  admins: [User!]!
+  members: [User!]!
+  sessions: [Session!]!
+}
+
+type User {
+  id: ID!
+  phoneNumber: String!
+  email: String
+  name: String!
+  avatarUrl: String
+  bio: String
+  tags: [String!]!
+  administeredGroups: [Group!]!
+  joinedGroups: [Group!]!
+  participatedSessions: [Session!]!
+}
+
+type Query {
+  user(id: ID!): User!
+  sessions: [Session!]!
+  session(id: Int!): Session!
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): Boolean!
+  updateUser(id: ID!, updateUserInput: UpdateUserInput!): Boolean!
+  createSession(createSessionInput: CreateSessionInput!): Session!
+  updateSession(updateSessionInput: UpdateSessionInput!): Session!
+  removeSession(id: Int!): Session!
+}
+
+input CreateUserInput {
+  phoneNumber: String!
+  password: String!
+  name: String!
+  tags: [String!]! = []
+}
+
+input UpdateUserInput {
+  phoneNumber: String
+  email: String
+  currentPassword: String
+  newPassword: String
+  name: String
+  avatarUrl: String
+  bio: String
+  tags: [String!]
+}
+
+input CreateSessionInput {
+  description: String!
+  latitude: Float
+  longitude: Float
+  address: String
+  startAt: DateTime!
+  endAt: DateTime!
+}
+
+input UpdateSessionInput {
+  description: String
+  latitude: Float
+  longitude: Float
+  address: String
+  startAt: DateTime
+  endAt: DateTime
+  id: ID!
+}
