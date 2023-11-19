@@ -14,6 +14,9 @@ export class UsersResolver {
   }
 
   @Mutation(() => Boolean)
+  async requestOTP(@Args('phoneNumber') phoneNumber: string) {}
+
+  @Mutation(() => Boolean)
   async createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
     return await this.usersService.createUser(createUserInput);
   }

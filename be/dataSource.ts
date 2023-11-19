@@ -8,7 +8,7 @@ dotenv.config();
 const dataSource = new DataSource({
   type: 'postgres',
   url: env.DATABASE_URL,
-  entities: [cwd() + '/src/**/*.model.ts'],
+  entities: [cwd() + '/src/entities/**/*.model.ts'],
   migrations: [cwd() + '/migrations/*.ts'],
   synchronize: false,
   logging: true,

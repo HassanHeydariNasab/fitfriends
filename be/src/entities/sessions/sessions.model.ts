@@ -11,8 +11,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { Group } from 'src/groups/groups.model';
-import { User } from 'src/users/users.model';
+import { Group } from '../groups/groups.model';
+import { User } from '../users/users.model';
 
 @Entity()
 @ObjectType()

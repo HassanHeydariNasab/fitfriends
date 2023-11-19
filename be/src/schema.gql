@@ -49,6 +49,7 @@ type Query {
 }
 
 type Mutation {
+  requestOTP(phoneNumber: String!): Boolean!
   createUser(createUserInput: CreateUserInput!): Boolean!
   updateUser(id: ID!, updateUserInput: UpdateUserInput!): Boolean!
   createSession(createSessionInput: CreateSessionInput!): Session!

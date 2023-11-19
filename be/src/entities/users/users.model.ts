@@ -9,8 +9,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { Group } from 'src/groups/groups.model';
-import { Session } from 'src/sessions/sessions.model';
+import { Group } from '../groups/groups.model';
+import { Session } from '../sessions/sessions.model';
 
 @Entity()
 @ObjectType()

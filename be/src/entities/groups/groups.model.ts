@@ -11,8 +11,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { User } from 'src/users/users.model';
-import { Session } from 'src/sessions/sessions.model';
+import { User } from '../users/users.model';
+import { Session } from '../sessions/sessions.model';
 
 @Entity()
 @ObjectType()
