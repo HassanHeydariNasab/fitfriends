@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { DataSource } from 'typeorm';
-import jwt from 'jsonwebtoken';
+import * as jwt from 'jsonwebtoken';
 
 import { User } from './users.model';
 import { USERS_SECURITY_OPTIONS } from './users.options';

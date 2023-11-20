@@ -1,15 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
-import Kavenegar from 'kavenegar';
+import { KavenegarApi, kavenegar } from 'kavenegar';
 
 import { SMS_OPTIONS } from './sms.options';
 import type { SmsOptions } from './sms.options';
 
 @Injectable()
 export class SmsService {
-  kavenegar: Kavenegar.kavenegar.KavenegarInstance;
+  kavenegar: kavenegar.KavenegarInstance;
 
   constructor(@Inject(SMS_OPTIONS) private options: SmsOptions) {
-    this.kavenegar = Kavenegar.KavenegarApi({ apikey: options.apiKey });
+    this.kavenegar = KavenegarApi({ apikey: options.apiKey });
   }
 
   sendOtp(phoneNumber: string, code: string) {

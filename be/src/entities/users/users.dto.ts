@@ -30,9 +30,6 @@ export class CreateUserInput {
   phoneNumber: string;
 
   @Field()
-  password: string;
-
-  @Field()
   name: string;
 
   @Field(() => [String], { defaultValue: [] })
@@ -46,12 +43,6 @@ export class UpdateUserInput {
 
   @Field({ nullable: true })
   email?: string;
-
-  @Field({ nullable: true })
-  currentPassword?: string;
-
-  @Field({ nullable: true })
-  newPassword?: string;
 
   @Field({ nullable: true })
   name?: string;
