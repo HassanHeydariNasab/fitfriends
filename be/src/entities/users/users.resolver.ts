@@ -2,7 +2,11 @@ import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import { User } from './users.model';
 import { UsersService } from './users.service';
-import { CreateUserInput, UpdateUserInput } from './users.dto';
+import {
+  RegisterUserInput,
+  RequestOtpInput,
+  UpdateUserInput,
+} from './users.dto';
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -14,11 +18,15 @@ export class UsersResolver {
   }
 
   @Mutation(() => Boolean)
-  async requestOTP(@Args('phoneNumber') phoneNumber: string) {}
+  async requestOTP(@Args('requestOtpInput') requestOtpInput: RequestOtpInput) {
+    return await this.usersService.requestOtp(requestOtpInput);
+  }
 
   @Mutation(() => Boolean)
-  async createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
-    return await this.usersService.createUser(createUserInput);
+  async registerUser(
+    @Args('registerUserInput') registerUserInput: RegisterUserInput,
+  ) {
+    return await this.usersService.registerUser(registerUserInput);
   }
 
   @Mutation(() => Boolean)
@@ -26,11 +34,6 @@ export class UsersResolver {
     @Args('id', { type: () => ID }) id: number,
     @Args('updateUserInput') updateUserInput: UpdateUserInput,
   ) {
-    if (updateUserInput.newPassword || updateUserInput.currentPassword) {
-      // TODO: check updateUserInput.currentPassword, then set updateUserInput.password to updateUserInput.newPassword
-      delete updateUserInput.newPassword;
-      delete updateUserInput.currentPassword;
-    }
     return await this.usersService.updateUser(id, updateUserInput);
   }
 }

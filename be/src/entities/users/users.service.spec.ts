@@ -5,14 +5,16 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 
-import { User } from './users.model';
-import { UsersService } from './users.service';
-import { UsersSecurity } from './users.security';
 import { Group } from '../groups/groups.model';
 import { Session } from '../sessions/sessions.model';
 import { RedisModule } from 'src/redis/redis.module';
 import { MessagingModule } from 'src/messaging/messaging.module';
+import { RedisService } from 'src/redis/redis.service';
 import { SmsService } from 'src/messaging/sms.service';
+
+import { User } from './users.model';
+import { UsersService } from './users.service';
+import { UsersSecurity } from './users.security';
 import { USERS_SECURITY_OPTIONS } from './users.options';
 import type { UsersSecurityOptions } from './users.options';
 
@@ -20,10 +22,11 @@ describe('usersService', () => {
   let userService: UsersService;
   let smsService: SmsService;
   let dataSource: DataSource;
+  let redisService: RedisService;
 
   let sentCode: string | undefined;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({ envFilePath: '.env.test', isGlobal: true }),
@@ -56,9 +59,12 @@ describe('usersService', () => {
     userService = module.get<UsersService>(UsersService);
     smsService = module.get<SmsService>(SmsService);
     dataSource = module.get<DataSource>(DataSource);
+    redisService = module.get<RedisService>(RedisService);
+
+    redisService.r.flushAll();
 
     sentCode = undefined;
-    jest.spyOn(smsService, 'sendOtp').mockImplementationOnce((_, code) => {
+    jest.spyOn(smsService, 'sendOtp').mockImplementation((_, code) => {
       sentCode = code;
       return Promise.resolve(true);
     });
@@ -69,44 +75,73 @@ describe('usersService', () => {
     expect(smsService).toBeDefined();
   });
 
-  it('should request OTP', async () => {
-    const result = await userService.requestOtp({ phoneNumber: '09013792332' });
-    expect(result).toBe(true);
-    expect(sentCode).toHaveLength(5);
-  });
+  describe('should register a new user and login the existing user', () => {
+    const userName = 'testUser1';
 
-  it('should register a new user', async () => {
-    const result = await userService.requestOtp({ phoneNumber: '09013792332' });
-
-    expect(result).toBe(true);
-    expect(sentCode).toHaveLength(5);
-
-    const verifyOtpResult = await userService.verifyOtp({
-      phoneNumber: '09013792332',
-      code: sentCode,
+    it('should request OTP', async () => {
+      const result = await userService.requestOtp({
+        phoneNumber: '09013792332',
+      });
+      expect(result).toBe(true);
+      expect(sentCode).toHaveLength(5);
     });
 
-    expect(verifyOtpResult).toBe(true);
+    it('should verify OTP and register a new user', async () => {
+      const verifyOtpResult = await userService.verifyOtp({
+        phoneNumber: '09013792332',
+        code: sentCode,
+      });
 
-    const token = await userService.registerUser({
-      verifyOtpInput: { code: sentCode, phoneNumber: '09013792332' },
-      createUserInput: {
-        name: 'testUser1',
-        tags: ['testTag1', 'testTag2'],
-      },
+      expect(verifyOtpResult).toEqual({ isRegistered: false });
+
+      const token = await userService.registerUser({
+        verifyOtpInput: { code: sentCode, phoneNumber: '09013792332' },
+        createUserInput: {
+          name: userName,
+          tags: ['testTag1', 'testTag2'],
+        },
+      });
+
+      expect(token).toBeDefined();
+
+      const users = await dataSource.getRepository(User).find({
+        where: { phoneNumber: '09013792332' },
+      });
+
+      expect(users).toHaveLength(1);
+
+      const user = users[0];
+
+      expect(user).toBeDefined();
+      expect(user?.name).toBe(userName);
     });
 
-    expect(token).toBeDefined();
+    it('should login the existing user', async () => {
+      const result = await userService.requestOtp({
+        phoneNumber: '09013792332',
+      });
 
-    const users = await dataSource.getRepository(User).find({
-      where: { phoneNumber: '09013792332' },
+      expect(result).toBe(true);
+      expect(sentCode).toHaveLength(5);
+
+      const verifyOtpResult = await userService.verifyOtp({
+        phoneNumber: '09013792332',
+        code: sentCode,
+      });
+
+      expect(verifyOtpResult.isRegistered).toBe(true);
+      expect(verifyOtpResult.token).toBeDefined();
+
+      const users = await dataSource.getRepository(User).find({
+        where: { phoneNumber: '09013792332' },
+      });
+
+      expect(users).toHaveLength(1);
+
+      const user = users[0];
+
+      expect(user).toBeDefined();
+      expect(user?.name).toBe(userName);
     });
-
-    expect(users).toHaveLength(1);
-
-    const user = users[0];
-
-    expect(user).toBeDefined();
-    expect(user?.name).toBe('testUser1');
   });
 });

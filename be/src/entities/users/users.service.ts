@@ -37,10 +37,10 @@ export class UsersService {
     }
   }
 
-  async verifyOtp({
-    phoneNumber,
-    code,
-  }: VerifyOtpInput): Promise<string | true> {
+  async verifyOtp({ phoneNumber, code }: VerifyOtpInput): Promise<{
+    isRegistered: boolean;
+    token?: string;
+  }> {
     try {
       const storedCode = await this.redisService.r.get(phoneNumber);
       if (!!storedCode && storedCode === code) {
@@ -49,10 +49,13 @@ export class UsersService {
           .findOne({ where: { phoneNumber } });
         if (user) {
           await this.redisService.r.del(phoneNumber);
-          return this.usersSecurity.generateToken(user);
+          return {
+            isRegistered: true,
+            token: this.usersSecurity.generateToken(user),
+          };
         } else {
           await this.redisService.r.expire(phoneNumber, 3600); // more time to register
-          return true;
+          return { isRegistered: false };
         }
       }
       throw new HttpException('invalid_otp', HttpStatus.CONFLICT);
@@ -108,6 +111,14 @@ export class UsersService {
 
   async updateUser(id: number, updateUserInput: UpdateUserInput) {
     try {
+      if (updateUserInput.phoneNumber) {
+        // TODO: verify new phone number
+        delete updateUserInput.phoneNumber;
+      }
+      if (updateUserInput.email) {
+        // TODO: verify new email
+        delete updateUserInput.email;
+      }
       await this.dataSource.getRepository(User).update(id, updateUserInput);
       return true;
     } catch (error) {
