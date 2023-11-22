@@ -5,20 +5,23 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 
-import { Group } from '../groups/groups.model';
-import { Session } from '../sessions/sessions.model';
 import { RedisModule } from 'src/redis/redis.module';
 import { MessagingModule } from 'src/messaging/messaging.module';
 import { RedisService } from 'src/redis/redis.service';
 import { SmsService } from 'src/messaging/sms.service';
 
-import { User } from './users.model';
-import { UsersService } from './users.service';
-import { UsersSecurity } from './users.security';
-import { USERS_SECURITY_OPTIONS } from './users.options';
-import type { UsersSecurityOptions } from './users.options';
+import { Session } from '../sessions/sessions.model';
+import { USERS_SECURITY_OPTIONS } from '../users/users.options';
+import type { UsersSecurityOptions } from '../users/users.options';
+import { UsersService } from '../users/users.service';
+import { User } from '../users/users.model';
+import { UsersSecurity } from '../users/users.security';
 
-describe('usersService', () => {
+import { Group } from './groups.model';
+import { GroupsService } from './groups.service';
+
+describe('groupsService', () => {
+  let groupsService: GroupsService;
   let userService: UsersService;
   let smsService: SmsService;
   let dataSource: DataSource;
@@ -47,6 +50,7 @@ describe('usersService', () => {
         }),
       ],
       providers: [
+        GroupsService,
         UsersService,
         UsersSecurity,
         {
@@ -56,6 +60,7 @@ describe('usersService', () => {
       ],
     }).compile();
 
+    groupsService = module.get<GroupsService>(GroupsService);
     userService = module.get<UsersService>(UsersService);
     smsService = module.get<SmsService>(SmsService);
     dataSource = module.get<DataSource>(DataSource);
@@ -71,13 +76,14 @@ describe('usersService', () => {
   });
 
   it('should be defined', () => {
+    expect(groupsService).toBeDefined();
     expect(userService).toBeDefined();
     expect(smsService).toBeDefined();
     expect(redisService).toBeDefined();
     expect(dataSource).toBeDefined();
   });
 
-  describe('register a new user and login the existing user', () => {
+  describe('register a new user and create a group', () => {
     const userName = 'testUser1';
 
     it('should request OTP', async () => {
@@ -105,45 +111,19 @@ describe('usersService', () => {
       });
 
       expect(token).toBeDefined();
-
-      const users = await dataSource.getRepository(User).find({
-        where: { phoneNumber: '09013792332' },
-      });
-
-      expect(users).toHaveLength(1);
-
-      const user = users[0];
-
-      expect(user).toBeDefined();
-      expect(user?.name).toBe(userName);
     });
 
-    it('should login the existing user', async () => {
-      const result = await userService.requestOtp({
-        phoneNumber: '09013792332',
+    it('should create a group', async () => {
+      const result = await groupsService.createGroup({
+        name: 'testGroup1',
+        description: 'testDescription1',
       });
-
       expect(result).toBe(true);
-      expect(sentCode).toHaveLength(5);
 
-      const verifyOtpResult = await userService.verifyOtp({
-        phoneNumber: '09013792332',
-        code: sentCode,
+      const groups = await dataSource.getRepository(Group).find({
+        where: { name: 'testGroup1' },
       });
-
-      expect(verifyOtpResult.isRegistered).toBe(true);
-      expect(verifyOtpResult.token).toBeDefined();
-
-      const users = await dataSource.getRepository(User).find({
-        where: { phoneNumber: '09013792332' },
-      });
-
-      expect(users).toHaveLength(1);
-
-      const user = users[0];
-
-      expect(user).toBeDefined();
-      expect(user?.name).toBe(userName);
+      expect(groups).toHaveLength(1);
     });
   });
 });

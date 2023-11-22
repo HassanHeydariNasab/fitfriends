@@ -14,6 +14,7 @@ import { User } from './entities/users/users.model';
 import { Group } from './entities/groups/groups.model';
 import { Session } from './entities/sessions/sessions.model';
 import { UsersModule } from './entities/users/users.module';
+import { GroupsModule } from './entities/groups/groups.module';
 import { SessionsModule } from './entities/sessions/sessions.module';
 import { RedisModule } from './redis/redis.module';
 import { MessagingModule } from './messaging/messaging.module';
@@ -43,6 +44,7 @@ import { MessagingModule } from './messaging/messaging.module';
       },
     }),
     UsersModule.forRoot({ security: { JWT_SECRET: env.JWT_SECRET } }),
+    GroupsModule,
     SessionsModule,
   ],
 
