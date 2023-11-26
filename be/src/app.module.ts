@@ -2,6 +2,7 @@ import { join } from 'path';
 import { env, cwd } from 'process';
 
 import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GraphQLModule } from '@nestjs/graphql';
@@ -13,11 +14,14 @@ import { AppService } from './app.service';
 import { User } from './entities/users/users.model';
 import { Group } from './entities/groups/groups.model';
 import { Session } from './entities/sessions/sessions.model';
+import { OtpModule } from './entities/otp/otp.module';
 import { UsersModule } from './entities/users/users.module';
 import { GroupsModule } from './entities/groups/groups.module';
 import { SessionsModule } from './entities/sessions/sessions.module';
-import { RedisModule } from './redis/redis.module';
+import { Otp } from './entities/otp/otp.model';
 import { MessagingModule } from './messaging/messaging.module';
+import { AuthModule } from './auth/auth.module';
+import { GqlAuthGuard } from './auth/gql-auth.guard';
 
 @Module({
   imports: [
@@ -27,11 +31,10 @@ import { MessagingModule } from './messaging/messaging.module';
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: env.DATABASE_URL,
-      entities: [User, Group, Session],
+      entities: [User, Group, Session, Otp],
       synchronize: false,
       logging: true,
     }),
-    RedisModule.forRoot({ url: env.REDIS_URL }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       playground: env.NODE_ENV !== 'prod',
@@ -43,12 +46,19 @@ import { MessagingModule } from './messaging/messaging.module';
         apiKey: env.KAVENEGAR_API_KEY,
       },
     }),
-    UsersModule.forRoot({ security: { JWT_SECRET: env.JWT_SECRET } }),
+    AuthModule.forRoot({
+      accessTokenSecret: env.REFRESH_TOKEN_SECRET,
+      refreshTokenSecret: env.ACCESS_TOKEN_SECRET,
+      accessTokenExpiresIn: env.ACCESS_TOKEN_EXPIRES_IN,
+      refreshTokenExpiresIn: env.REFRESH_TOKEN_EXPIRES_IN,
+    }),
+    UsersModule,
     GroupsModule,
     SessionsModule,
+    OtpModule,
   ],
 
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, { provide: APP_GUARD, useClass: GqlAuthGuard }],
 })
 export class AppModule {}

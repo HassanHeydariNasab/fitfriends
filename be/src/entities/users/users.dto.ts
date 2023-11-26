@@ -1,4 +1,4 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { Field, InputType, ObjectType } from '@nestjs/graphql';
 
 @InputType()
 export class RequestOtpInput {
@@ -16,24 +16,21 @@ export class VerifyOtpInput {
 }
 
 @InputType()
-export class RegisterUserInput {
-  @Field()
-  verifyOtpInput: VerifyOtpInput;
-
-  @Field()
-  createUserInput: Omit<CreateUserInput, 'phoneNumber'>;
-}
-
-@InputType()
 export class CreateUserInput {
-  @Field()
-  phoneNumber: string;
-
   @Field()
   name: string;
 
   @Field(() => [String], { defaultValue: [] })
   tags: string[];
+}
+
+@InputType()
+export class RegisterUserInput {
+  @Field()
+  verifyOtpInput: VerifyOtpInput;
+
+  @Field()
+  createUserInput: CreateUserInput;
 }
 
 @InputType()
@@ -55,4 +52,28 @@ export class UpdateUserInput {
 
   @Field(() => [String], { nullable: true })
   tags?: string[];
+}
+
+@ObjectType()
+export class Tokens {
+  @Field()
+  accessToken: string;
+
+  @Field()
+  refreshToken: string;
+}
+
+@ObjectType()
+export class VerifyOtpResponse {
+  @Field()
+  isRegistered: boolean;
+
+  @Field({ nullable: true })
+  tokens?: Tokens;
+}
+
+@ObjectType()
+export class RegisterResponse {
+  @Field()
+  tokens: Tokens;
 }

@@ -9,7 +9,7 @@ import { AppService } from './app.service';
 import { User } from './entities/users/users.model';
 import { Group } from './entities/groups/groups.model';
 import { Session } from './entities/sessions/sessions.model';
-import { RedisModule } from './redis/redis.module';
+import { Otp } from './entities/otp/otp.model';
 
 describe('AppController', () => {
   let appController: AppController;
@@ -21,11 +21,11 @@ describe('AppController', () => {
         TypeOrmModule.forRoot({
           type: 'postgres',
           url: env.DATABASE_URL,
-          entities: [User, Group, Session],
-          synchronize: false,
+          entities: [User, Group, Session, Otp],
+          synchronize: true,
+          dropSchema: true,
           logging: false,
         }),
-        RedisModule.forRoot({ url: env.REDIS_URL }),
       ],
       controllers: [AppController],
       providers: [AppService],

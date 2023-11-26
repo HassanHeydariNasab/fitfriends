@@ -42,24 +42,48 @@ type User {
   participatedSessions: [Session!]!
 }
 
+type Tokens {
+  accessToken: String!
+  refreshToken: String!
+}
+
+type VerifyOtpResponse {
+  isRegistered: Boolean!
+  tokens: Tokens
+}
+
 type Query {
+  me: User!
   user(id: ID!): User!
   sessions: [Session!]!
   session(id: Int!): Session!
 }
 
 type Mutation {
-  requestOTP(phoneNumber: String!): Boolean!
-  createUser(createUserInput: CreateUserInput!): Boolean!
+  requestOTP(requestOtpInput: RequestOtpInput!): Boolean!
+  verifyOTP(verifyOtpInput: VerifyOtpInput!): VerifyOtpResponse!
+  registerUser(registerUserInput: RegisterUserInput!): Boolean!
   updateUser(id: ID!, updateUserInput: UpdateUserInput!): Boolean!
   createSession(createSessionInput: CreateSessionInput!): Session!
   updateSession(updateSessionInput: UpdateSessionInput!): Session!
   removeSession(id: Int!): Session!
 }
 
-input CreateUserInput {
+input RequestOtpInput {
   phoneNumber: String!
-  password: String!
+}
+
+input VerifyOtpInput {
+  phoneNumber: String!
+  code: String!
+}
+
+input RegisterUserInput {
+  verifyOtpInput: VerifyOtpInput!
+  createUserInput: CreateUserInput!
+}
+
+input CreateUserInput {
   name: String!
   tags: [String!]! = []
 }
@@ -67,8 +91,6 @@ input CreateUserInput {
 input UpdateUserInput {
   phoneNumber: String
   email: String
-  currentPassword: String
-  newPassword: String
   name: String
   avatarUrl: String
   bio: String

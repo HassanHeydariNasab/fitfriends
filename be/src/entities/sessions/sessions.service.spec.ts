@@ -8,7 +8,8 @@ import { SessionsService } from './sessions.service';
 import { Session } from './sessions.model';
 import { User } from '../users/users.model';
 import { Group } from '../groups/groups.model';
-import { RedisModule } from 'src/redis/redis.module';
+import { OtpModule } from '../otp/otp.module';
+import { Otp } from '../otp/otp.model';
 
 describe('SessionsService', () => {
   let service: SessionsService;
@@ -20,11 +21,11 @@ describe('SessionsService', () => {
         TypeOrmModule.forRoot({
           type: 'postgres',
           url: env.DATABASE_URL,
-          entities: [User, Group, Session],
+          entities: [User, Group, Session, Otp],
           synchronize: false,
           logging: false,
         }),
-        RedisModule.forRoot({ url: env.REDIS_URL }),
+        OtpModule,
       ],
       providers: [SessionsService],
     }).compile();

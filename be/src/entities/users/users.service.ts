@@ -1,74 +1,60 @@
-import { randomInt } from 'crypto';
-
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { DataSource } from 'typeorm';
+
+import { SmsService } from 'src/messaging/sms.service';
+import { AuthService } from 'src/auth/auth.service';
+import { OtpService } from 'src/entities/otp/otp.service';
 
 import { User } from './users.model';
 import {
   CreateUserInput,
+  RegisterResponse,
   RegisterUserInput,
   RequestOtpInput,
   UpdateUserInput,
   VerifyOtpInput,
+  VerifyOtpResponse,
 } from './users.dto';
-import { SmsService } from 'src/messaging/sms.service';
-import { RedisService } from 'src/redis/redis.service';
-import { UsersSecurity } from './users.security';
 
 @Injectable({})
 export class UsersService {
   constructor(
     private dataSource: DataSource,
     private smsService: SmsService,
-    private redisService: RedisService,
-    private usersSecurity: UsersSecurity,
+    private authService: AuthService,
+    private otpService: OtpService,
   ) {}
 
-  async requestOtp({ phoneNumber }: RequestOtpInput) {
-    const code = randomInt(10000, 99999).toString();
-    try {
-      await this.redisService.r.set(phoneNumber, code, { EX: 900 });
-      return await this.smsService.sendOtp(phoneNumber, code);
-    } catch (error) {
-      throw new HttpException(
-        'sending_otp_failed',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+  async requestOtp({ phoneNumber }: RequestOtpInput): Promise<boolean> {
+    const code = await this.otpService.create(phoneNumber);
+    return await this.smsService.sendOtp(phoneNumber, code);
   }
 
-  async verifyOtp({ phoneNumber, code }: VerifyOtpInput): Promise<{
-    isRegistered: boolean;
-    token?: string;
-  }> {
-    try {
-      const storedCode = await this.redisService.r.get(phoneNumber);
-      if (!!storedCode && storedCode === code) {
-        const user: User | null = await this.dataSource
-          .getRepository(User)
-          .findOne({ where: { phoneNumber } });
-        if (user) {
-          await this.redisService.r.del(phoneNumber);
-          return {
-            isRegistered: true,
-            token: this.usersSecurity.generateToken(user),
-          };
-        } else {
-          await this.redisService.r.expire(phoneNumber, 3600); // more time to register
-          return { isRegistered: false };
-        }
+  async verifyOtp({
+    phoneNumber,
+    code,
+  }: VerifyOtpInput): Promise<VerifyOtpResponse> {
+    if (await this.otpService.isValid(phoneNumber, code)) {
+      const user: User | null = await this.dataSource
+        .getRepository(User)
+        .findOne({ where: { phoneNumber } });
+      if (user) {
+        await this.otpService.delete(phoneNumber);
+        return {
+          isRegistered: true,
+          tokens: this.authService.generateTokens(user),
+        };
+      } else {
+        await this.otpService.extendExpiration(phoneNumber); // more time for registration
+        return { isRegistered: false };
       }
-      throw new HttpException('invalid_otp', HttpStatus.CONFLICT);
-    } catch (error) {
-      throw new HttpException(
-        'verifying_otp_failed',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-        { cause: error === 'invalid_otp' ? 'invalid_otp' : 'unknown' },
-      );
     }
+    throw new HttpException('invalid_otp', HttpStatus.CONFLICT);
   }
 
-  private async createUser(createUserInput: CreateUserInput): Promise<true> {
+  private async createUser(
+    createUserInput: CreateUserInput & { phoneNumber: string },
+  ): Promise<true> {
     try {
       await this.dataSource.getRepository(User).insert(createUserInput);
       return true;
@@ -77,9 +63,12 @@ export class UsersService {
     }
   }
 
-  async registerUser({ verifyOtpInput, createUserInput }: RegisterUserInput) {
+  async registerUser({
+    verifyOtpInput,
+    createUserInput,
+  }: RegisterUserInput): Promise<RegisterResponse> {
     await this.verifyOtp(verifyOtpInput);
-    await this.redisService.r.del(verifyOtpInput.phoneNumber);
+    await this.otpService.delete(verifyOtpInput.phoneNumber);
     await this.createUser({
       ...createUserInput,
       phoneNumber: verifyOtpInput.phoneNumber,
@@ -88,7 +77,7 @@ export class UsersService {
       where: { phoneNumber: verifyOtpInput.phoneNumber },
     });
     if (user) {
-      return this.usersSecurity.generateToken(user);
+      return Promise.resolve({ tokens: this.authService.generateTokens(user) });
     } else {
       throw new HttpException('user_not_found', HttpStatus.NOT_FOUND);
     }

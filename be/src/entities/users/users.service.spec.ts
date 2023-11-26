@@ -7,22 +7,21 @@ import { DataSource } from 'typeorm';
 
 import { Group } from '../groups/groups.model';
 import { Session } from '../sessions/sessions.model';
-import { RedisModule } from 'src/redis/redis.module';
+import { OtpModule } from '../otp/otp.module';
+import { OtpService } from '../otp/otp.service';
+import { Otp } from '../otp/otp.model';
 import { MessagingModule } from 'src/messaging/messaging.module';
-import { RedisService } from 'src/redis/redis.service';
 import { SmsService } from 'src/messaging/sms.service';
+import { AuthModule } from 'src/auth/auth.module';
 
 import { User } from './users.model';
 import { UsersService } from './users.service';
-import { UsersSecurity } from './users.security';
-import { USERS_SECURITY_OPTIONS } from './users.options';
-import type { UsersSecurityOptions } from './users.options';
 
 describe('usersService', () => {
   let userService: UsersService;
   let smsService: SmsService;
   let dataSource: DataSource;
-  let redisService: RedisService;
+  let otpService: OtpService;
 
   let sentCode: string | undefined;
 
@@ -33,35 +32,32 @@ describe('usersService', () => {
         TypeOrmModule.forRoot({
           type: 'postgres',
           url: env.DATABASE_URL,
-          entities: [User, Group, Session],
+          entities: [User, Group, Session, Otp],
           synchronize: true,
           dropSchema: true,
           logging: false,
         }),
-        RedisModule.forRoot({ url: env.REDIS_URL }),
         MessagingModule.forRoot({
           sms: {
             verificationTemplate: env.KAVENEGAR_VERIFICATION_TEMPLATE,
             apiKey: env.KAVENEGAR_API_KEY,
           },
         }),
+        AuthModule.forRoot({
+          accessTokenSecret: env.ACCESS_TOKEN_SECRET,
+          refreshTokenSecret: env.REFRESH_TOKEN_SECRET,
+          accessTokenExpiresIn: env.ACCESS_TOKEN_EXPIRES_IN,
+          refreshTokenExpiresIn: env.REFRESH_TOKEN_EXPIRES_IN,
+        }),
+        OtpModule,
       ],
-      providers: [
-        UsersService,
-        UsersSecurity,
-        {
-          provide: USERS_SECURITY_OPTIONS,
-          useValue: { JWT_SECRET: env.JWT_SECRET } as UsersSecurityOptions,
-        },
-      ],
+      providers: [UsersService],
     }).compile();
 
     userService = module.get<UsersService>(UsersService);
     smsService = module.get<SmsService>(SmsService);
     dataSource = module.get<DataSource>(DataSource);
-    redisService = module.get<RedisService>(RedisService);
-
-    redisService.r.flushAll();
+    otpService = module.get<OtpService>(OtpService);
 
     sentCode = undefined;
     jest.spyOn(smsService, 'sendOtp').mockImplementation((_, code) => {
@@ -73,8 +69,8 @@ describe('usersService', () => {
   it('should be defined', () => {
     expect(userService).toBeDefined();
     expect(smsService).toBeDefined();
-    expect(redisService).toBeDefined();
     expect(dataSource).toBeDefined();
+    expect(otpService).toBeDefined();
   });
 
   describe('register a new user and login the existing user', () => {
@@ -96,7 +92,7 @@ describe('usersService', () => {
 
       expect(verifyOtpResult).toEqual({ isRegistered: false });
 
-      const token = await userService.registerUser({
+      const registerUserResult = await userService.registerUser({
         verifyOtpInput: { code: sentCode, phoneNumber: '09013792332' },
         createUserInput: {
           name: userName,
@@ -104,7 +100,9 @@ describe('usersService', () => {
         },
       });
 
-      expect(token).toBeDefined();
+      expect(registerUserResult.tokens).toBeDefined();
+      expect(typeof registerUserResult.tokens.accessToken).toBe('string');
+      expect(typeof registerUserResult.tokens.refreshToken).toBe('string');
 
       const users = await dataSource.getRepository(User).find({
         where: { phoneNumber: '09013792332' },
@@ -132,7 +130,12 @@ describe('usersService', () => {
       });
 
       expect(verifyOtpResult.isRegistered).toBe(true);
-      expect(verifyOtpResult.token).toBeDefined();
+      expect(verifyOtpResult.tokens).toBeDefined();
+      expect(typeof verifyOtpResult.tokens.accessToken).toBe('string');
+      expect(typeof verifyOtpResult.tokens.refreshToken).toBe('string');
+
+      //accessToken = verifyOtpResult.tokens.accessToken;
+      //refreshToken = verifyOtpResult.tokens.refreshToken;
 
       const users = await dataSource.getRepository(User).find({
         where: { phoneNumber: '09013792332' },
@@ -142,6 +145,12 @@ describe('usersService', () => {
 
       const user = users[0];
 
+      expect(user).toBeDefined();
+      expect(user?.name).toBe(userName);
+    });
+
+    it('should get the user', async () => {
+      const user = await userService.getUser(1); // TODO: use the user id from the previous test
       expect(user).toBeDefined();
       expect(user?.name).toBe(userName);
     });

@@ -5,17 +5,16 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 
-import { RedisModule } from 'src/redis/redis.module';
+import { UsersModule } from 'src/entities/users/users.module';
+import { UsersService } from 'src/entities/users/users.service';
+import { User } from 'src/entities/users/users.model';
+import { Session } from 'src/entities/sessions/sessions.model';
+import { OtpModule } from 'src/entities/otp/otp.module';
+import { Otp } from '../otp/otp.model';
+import { OtpService } from '../otp/otp.service';
 import { MessagingModule } from 'src/messaging/messaging.module';
-import { RedisService } from 'src/redis/redis.service';
 import { SmsService } from 'src/messaging/sms.service';
-
-import { Session } from '../sessions/sessions.model';
-import { USERS_SECURITY_OPTIONS } from '../users/users.options';
-import type { UsersSecurityOptions } from '../users/users.options';
-import { UsersService } from '../users/users.service';
-import { User } from '../users/users.model';
-import { UsersSecurity } from '../users/users.security';
+import { AuthModule } from 'src/auth/auth.module';
 
 import { Group } from './groups.model';
 import { GroupsService } from './groups.service';
@@ -25,7 +24,7 @@ describe('groupsService', () => {
   let userService: UsersService;
   let smsService: SmsService;
   let dataSource: DataSource;
-  let redisService: RedisService;
+  let otpService: OtpService;
 
   let sentCode: string | undefined;
 
@@ -36,37 +35,34 @@ describe('groupsService', () => {
         TypeOrmModule.forRoot({
           type: 'postgres',
           url: env.DATABASE_URL,
-          entities: [User, Group, Session],
+          entities: [User, Group, Session, Otp],
           synchronize: true,
           dropSchema: true,
           logging: false,
         }),
-        RedisModule.forRoot({ url: env.REDIS_URL }),
         MessagingModule.forRoot({
           sms: {
             verificationTemplate: env.KAVENEGAR_VERIFICATION_TEMPLATE,
             apiKey: env.KAVENEGAR_API_KEY,
           },
         }),
+        AuthModule.forRoot({
+          accessTokenSecret: env.ACCESS_TOKEN_SECRET,
+          refreshTokenSecret: env.REFRESH_TOKEN_SECRET,
+          accessTokenExpiresIn: env.ACCESS_TOKEN_EXPIRES_IN,
+          refreshTokenExpiresIn: env.REFRESH_TOKEN_EXPIRES_IN,
+        }),
+        UsersModule,
+        OtpModule,
       ],
-      providers: [
-        GroupsService,
-        UsersService,
-        UsersSecurity,
-        {
-          provide: USERS_SECURITY_OPTIONS,
-          useValue: { JWT_SECRET: env.JWT_SECRET } as UsersSecurityOptions,
-        },
-      ],
+      providers: [GroupsService, UsersService],
     }).compile();
 
     groupsService = module.get<GroupsService>(GroupsService);
     userService = module.get<UsersService>(UsersService);
     smsService = module.get<SmsService>(SmsService);
     dataSource = module.get<DataSource>(DataSource);
-    redisService = module.get<RedisService>(RedisService);
-
-    redisService.r.flushAll();
+    otpService = module.get<OtpService>(OtpService);
 
     sentCode = undefined;
     jest.spyOn(smsService, 'sendOtp').mockImplementation((_, code) => {
@@ -79,8 +75,8 @@ describe('groupsService', () => {
     expect(groupsService).toBeDefined();
     expect(userService).toBeDefined();
     expect(smsService).toBeDefined();
-    expect(redisService).toBeDefined();
     expect(dataSource).toBeDefined();
+    expect(otpService).toBeDefined();
   });
 
   describe('register a new user and create a group', () => {
@@ -102,7 +98,7 @@ describe('groupsService', () => {
 
       expect(verifyOtpResult).toEqual({ isRegistered: false });
 
-      const token = await userService.registerUser({
+      const registerUserResult = await userService.registerUser({
         verifyOtpInput: { code: sentCode, phoneNumber: '09013792332' },
         createUserInput: {
           name: userName,
@@ -110,7 +106,9 @@ describe('groupsService', () => {
         },
       });
 
-      expect(token).toBeDefined();
+      expect(registerUserResult.tokens).toBeDefined();
+      expect(typeof registerUserResult.tokens.accessToken).toBe('string');
+      expect(typeof registerUserResult.tokens.refreshToken).toBe('string');
     });
 
     it('should create a group', async () => {
