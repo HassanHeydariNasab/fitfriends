@@ -1,16 +1,10 @@
-import {
-  CanActivate,
-  ExecutionContext,
-  Global,
-  Injectable,
-} from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { GqlContextType, GqlExecutionContext } from '@nestjs/graphql';
 import { AuthGuard } from '@nestjs/passport';
 
 import { IS_PUBLIC } from './auth.metadata';
 
-@Global()
 @Injectable()
 export class GqlAuthGuard
   extends AuthGuard('jwt-access')

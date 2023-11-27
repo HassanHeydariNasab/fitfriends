@@ -12,6 +12,11 @@ export class AuthService {
     @Inject(AUTH_OPTIONS) private options: AuthOptions,
   ) {}
 
+  /** Generate access and refresh tokens for a user
+   * based on the user's id.
+   * Later, we can use the other user's properties to
+   * generate the tokens.
+   * */
   generateTokens(user: User) {
     const payload = { sub: user.id };
 

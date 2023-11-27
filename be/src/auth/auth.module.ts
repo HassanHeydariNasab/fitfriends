@@ -1,4 +1,4 @@
-import { DynamicModule, Global, Module } from '@nestjs/common';
+import { DynamicModule, Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 
@@ -6,9 +6,7 @@ import { AuthService } from './auth.service';
 import { JwtAccessStrategy } from './jwt-access.strategy';
 import { JwtRefreshStrategy } from './jwt-refresh.strategy';
 import { AUTH_OPTIONS, AuthOptions } from './auth.options';
-import { GqlAuthGuard } from './gql-auth.guard';
 
-@Global()
 @Module({})
 export class AuthModule {
   static forRoot(options: AuthOptions): DynamicModule {
@@ -26,14 +24,8 @@ export class AuthModule {
         AuthService,
         JwtAccessStrategy,
         JwtRefreshStrategy,
-        GqlAuthGuard,
       ],
-      exports: [
-        AuthService,
-        JwtAccessStrategy,
-        JwtRefreshStrategy,
-        GqlAuthGuard,
-      ],
+      exports: [AuthService],
       global: true,
     };
   }
