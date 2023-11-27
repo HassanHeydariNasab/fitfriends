@@ -134,9 +134,6 @@ describe('usersService', () => {
       expect(typeof verifyOtpResult.tokens.accessToken).toBe('string');
       expect(typeof verifyOtpResult.tokens.refreshToken).toBe('string');
 
-      //accessToken = verifyOtpResult.tokens.accessToken;
-      //refreshToken = verifyOtpResult.tokens.refreshToken;
-
       const users = await dataSource.getRepository(User).find({
         where: { phoneNumber: '09013792332' },
       });
