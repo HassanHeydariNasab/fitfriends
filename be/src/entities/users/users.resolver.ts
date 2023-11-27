@@ -1,6 +1,6 @@
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 
-import { CurrentUser } from 'src/auth/current-user.decorator';
+import { CurrentUserId } from 'src/auth/current-user.decorator';
 import { Public } from 'src/auth/auth.metadata';
 
 import { User } from './users.model';
@@ -18,9 +18,9 @@ export class UsersResolver {
   constructor(private usersService: UsersService) {}
 
   @Query(() => User)
-  async me(@CurrentUser() user: User) {
-    console.log({ user });
-    return await this.usersService.getUser(user['id']);
+  async me(@CurrentUserId() userId: number) {
+    console.log({ userId });
+    return await this.usersService.getUser(userId);
   }
 
   @Query(() => User)

@@ -47,9 +47,9 @@ import { GqlAuthGuard } from './auth/gql-auth.guard';
       },
     }),
     AuthModule.forRoot({
-      accessTokenSecret: env.REFRESH_TOKEN_SECRET,
-      refreshTokenSecret: env.ACCESS_TOKEN_SECRET,
+      accessTokenSecret: env.ACCESS_TOKEN_SECRET,
       accessTokenExpiresIn: env.ACCESS_TOKEN_EXPIRES_IN,
+      refreshTokenSecret: env.REFRESH_TOKEN_SECRET,
       refreshTokenExpiresIn: env.REFRESH_TOKEN_EXPIRES_IN,
     }),
     UsersModule,

@@ -12,11 +12,14 @@ export class OtpService {
   async create(phoneNumber: string): Promise<string> {
     try {
       const code = randomInt(10000, 99999).toString();
-      await this.dataSource.getRepository(Otp).insert({
-        phoneNumber,
-        code,
-        expiresAt: new Date(Date.now() + 300000),
-      });
+      await this.dataSource.getRepository(Otp).upsert(
+        {
+          phoneNumber,
+          code,
+          expiresAt: new Date(Date.now() + 300000),
+        },
+        ['phoneNumber'],
+      );
       return code;
     } catch (error) {
       console.log(error);

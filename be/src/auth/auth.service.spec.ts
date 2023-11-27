@@ -6,11 +6,12 @@ import { PassportModule } from '@nestjs/passport';
 
 import { AuthService } from './auth.service';
 import { AUTH_OPTIONS } from './auth.options';
-import { JwtStrategy } from './jwt.strategy';
+import { JwtAccessStrategy } from './jwt-access.strategy';
 import { ConfigModule } from '@nestjs/config';
 
 describe('AuthService', () => {
   let service: AuthService;
+  let module: TestingModule;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -20,7 +21,7 @@ describe('AuthService', () => {
         JwtModule.register({}),
       ],
       providers: [
-        JwtStrategy,
+        JwtAccessStrategy,
         AuthService,
         {
           provide: AUTH_OPTIONS,
@@ -35,6 +36,10 @@ describe('AuthService', () => {
     }).compile();
 
     service = module.get<AuthService>(AuthService);
+  });
+
+  afterAll(async () => {
+    await module.close();
   });
 
   it('should be defined', () => {
