@@ -71,7 +71,14 @@ export class UsersService {
     verifyOtpInput,
     createUserInput,
   }: RegisterUserInput): Promise<RegisterResponse> {
-    await this.verifyOtp(verifyOtpInput);
+    if (
+      !(await this.otpService.isValid(
+        verifyOtpInput.phoneNumber,
+        verifyOtpInput.code,
+      ))
+    ) {
+      throw new HttpException('invalid_otp', HttpStatus.CONFLICT);
+    }
     await this.otpService.delete(verifyOtpInput.phoneNumber);
     await this.createUser({
       ...createUserInput,
@@ -88,8 +95,12 @@ export class UsersService {
     }
   }
 
-  async refreshTokens(refreshToken: string) {
-    return await this.authService.refreshTokens(refreshToken);
+  refreshTokens(refreshToken: string) {
+    return this.authService.refreshTokens(refreshToken);
+  }
+
+  logout(refreshToken: string) {
+    return this.authService.logout(refreshToken);
   }
 
   async getUser(userId: number) {

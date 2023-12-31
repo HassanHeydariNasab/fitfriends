@@ -118,14 +118,6 @@ describe('usersService', () => {
 
       expect(user).toBeDefined();
       expect(user?.name).toBe(userName);
-
-      const newTokens = await userService.refreshTokens(
-        registerUserResult.tokens.refreshToken,
-      );
-
-      expect(newTokens).toBeDefined();
-      expect(typeof newTokens.accessToken).toBe('string');
-      expect(typeof newTokens.refreshToken).toBe('string');
     });
 
     it('should get the user', async () => {
@@ -134,7 +126,7 @@ describe('usersService', () => {
       expect(user?.name).toBe(userName);
     });
 
-    it('should login the existing user', async () => {
+    it('should login/logout the existing user', async () => {
       const result = await userService.requestOtp({
         phoneNumber,
       });
@@ -170,6 +162,34 @@ describe('usersService', () => {
       expect(newTokens).toBeDefined();
       expect(typeof newTokens.accessToken).toBe('string');
       expect(typeof newTokens.refreshToken).toBe('string');
+
+      // Another login
+      await userService.requestOtp({
+        phoneNumber,
+      });
+      await userService.verifyOtp({
+        phoneNumber,
+        code: sentCode,
+      });
+
+      const logins1 = await dataSource
+        .getRepository<Login>(Login)
+        .find({ where: { userId: user.id } });
+
+      expect(logins1).toHaveLength(3);
+
+      const logoutResult = await userService.logout(newTokens.refreshToken);
+      expect(logoutResult).toBe(true);
+
+      const logins2 = await dataSource
+        .getRepository<Login>(Login)
+        .find({ where: { userId: user.id } });
+
+      expect(logins2).toHaveLength(2);
+
+      await expect(
+        userService.refreshTokens(newTokens.refreshToken),
+      ).rejects.toThrow();
     });
 
     it('should not refresh the tokens', async () => {

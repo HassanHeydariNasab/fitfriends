@@ -1,10 +1,13 @@
+import { randomUUID } from 'crypto';
+
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { DataSource } from 'typeorm';
 import { hash, compare } from 'bcrypt';
 
-import { AUTH_OPTIONS, AuthOptions } from './auth.options';
 import { Login } from 'src/entities/logins/logins.model';
+
+import { AUTH_OPTIONS, AuthOptions } from './auth.options';
 
 /** WARN: Don't expose this service to the user directly. */
 @Injectable()
@@ -26,11 +29,15 @@ export class AuthService {
     const accessToken = await this.jwtService.signAsync(payload, {
       secret: this.options.accessTokenSecret,
       expiresIn: this.options.accessTokenExpiresIn,
+      jwtid: randomUUID(),
     });
     const refreshToken = await this.jwtService.signAsync(payload, {
       secret: this.options.refreshTokenSecret,
       expiresIn: this.options.refreshTokenExpiresIn,
+      jwtid: randomUUID(), // avoid conflicts of `sign` for tokens with the same payload (expiresIn is based on seconds)
     });
+
+    console.log({ accessToken, refreshToken });
 
     return {
       accessToken,
@@ -85,7 +92,14 @@ export class AuthService {
     for (const login of logins) {
       if (await compare(refreshToken.split('.')[2], login.hashedRefreshToken)) {
         loginId = login.id;
-        break;
+        console.log(
+          'found loginId: ',
+          loginId,
+          'comapred',
+          refreshToken.split('.')[2],
+          login.hashedRefreshToken,
+        );
+        //break;
       }
     }
     if (loginId === null) {
@@ -95,11 +109,15 @@ export class AuthService {
       );
     }
 
+    console.log('refresh: ', { logins, loginId, refreshToken });
+
     const newTokens = await this.generateTokens(userId);
     const newHashedRefreshToken = await hash(
       newTokens.refreshToken.split('.')[2],
       10,
     );
+
+    console.log({ newHashedRefreshToken });
 
     const updateResult = await this.dataSource
       .getRepository<Login>(Login)
@@ -125,5 +143,43 @@ export class AuthService {
       select: ['id', 'updatedAt'],
     });
     return logins;
+  }
+
+  async logout(refreshToken: string): Promise<true> {
+    try {
+      this.jwtService.verify(refreshToken, {
+        secret: this.options.refreshTokenSecret,
+      });
+    } catch (error) {
+      throw new HttpException(
+        'refresh_token_is_invalid',
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+
+    const { sub: userId } = this.jwtService.decode(refreshToken);
+
+    const logins = await this.dataSource.getRepository<Login>(Login).find({
+      where: { userId },
+    });
+
+    let loginId: number | null = null;
+    for (const login of logins) {
+      if (await compare(refreshToken.split('.')[2], login.hashedRefreshToken)) {
+        loginId = login.id;
+        break;
+      }
+    }
+    if (loginId === null) {
+      throw new HttpException(
+        'refresh_token_is_invalid',
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+    console.log('logout: ', { logins, loginId, refreshToken });
+
+    await this.dataSource.getRepository<Login>(Login).delete(loginId);
+
+    return true;
   }
 }
