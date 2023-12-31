@@ -8,6 +8,8 @@ import { OtpService } from 'src/entities/otp/otp.service';
 import { User } from './users.model';
 import {
   CreateUserInput,
+  LogoutInput,
+  RefreshTokenInput,
   RegisterResponse,
   RegisterUserInput,
   RequestOtpInput,
@@ -95,11 +97,11 @@ export class UsersService {
     }
   }
 
-  refreshTokens(refreshToken: string) {
+  refreshTokens({ refreshToken }: RefreshTokenInput) {
     return this.authService.refreshTokens(refreshToken);
   }
 
-  logout(refreshToken: string) {
+  logout({ refreshToken }: LogoutInput) {
     return this.authService.logout(refreshToken);
   }
 

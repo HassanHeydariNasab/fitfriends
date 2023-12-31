@@ -37,8 +37,6 @@ export class AuthService {
       jwtid: randomUUID(), // avoid conflicts of `sign` for tokens with the same payload (expiresIn is based on seconds)
     });
 
-    console.log({ accessToken, refreshToken });
-
     return {
       accessToken,
       refreshToken,
@@ -92,14 +90,7 @@ export class AuthService {
     for (const login of logins) {
       if (await compare(refreshToken.split('.')[2], login.hashedRefreshToken)) {
         loginId = login.id;
-        console.log(
-          'found loginId: ',
-          loginId,
-          'comapred',
-          refreshToken.split('.')[2],
-          login.hashedRefreshToken,
-        );
-        //break;
+        break;
       }
     }
     if (loginId === null) {
@@ -109,15 +100,11 @@ export class AuthService {
       );
     }
 
-    console.log('refresh: ', { logins, loginId, refreshToken });
-
     const newTokens = await this.generateTokens(userId);
     const newHashedRefreshToken = await hash(
       newTokens.refreshToken.split('.')[2],
       10,
     );
-
-    console.log({ newHashedRefreshToken });
 
     const updateResult = await this.dataSource
       .getRepository<Login>(Login)
@@ -176,8 +163,6 @@ export class AuthService {
         HttpStatus.UNAUTHORIZED,
       );
     }
-    console.log('logout: ', { logins, loginId, refreshToken });
-
     await this.dataSource.getRepository<Login>(Login).delete(loginId);
 
     return true;

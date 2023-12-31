@@ -6,6 +6,8 @@ import { Public } from 'src/auth/auth.metadata';
 import { User } from './users.model';
 import { UsersService } from './users.service';
 import {
+  LogoutInput,
+  RefreshTokenInput,
   RegisterUserInput,
   RequestOtpInput,
   UpdateUserInput,
@@ -45,6 +47,20 @@ export class UsersResolver {
     @Args('registerUserInput') registerUserInput: RegisterUserInput,
   ) {
     return await this.usersService.registerUser(registerUserInput);
+  }
+
+  @Public()
+  @Mutation(() => Boolean)
+  async refreshToken(
+    @Args('refreshTokenInput') refreshTokenInput: RefreshTokenInput,
+  ) {
+    return await this.usersService.refreshTokens(refreshTokenInput);
+  }
+
+  @Public()
+  @Mutation(() => Boolean)
+  async logout(@Args('logoutInput') logoutInput: LogoutInput) {
+    return await this.usersService.logout(logoutInput);
   }
 
   @Mutation(() => Boolean)

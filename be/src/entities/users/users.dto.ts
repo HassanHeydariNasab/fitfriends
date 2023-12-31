@@ -54,6 +54,18 @@ export class UpdateUserInput {
   tags?: string[];
 }
 
+@InputType()
+export class RefreshTokenInput {
+  @Field()
+  refreshToken: string;
+}
+
+@InputType()
+export class LogoutInput {
+  @Field()
+  refreshToken: string;
+}
+
 @ObjectType()
 export class Tokens {
   @Field()

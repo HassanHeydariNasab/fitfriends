@@ -157,7 +157,9 @@ describe('usersService', () => {
 
       const { tokens } = verifyOtpResult;
 
-      const newTokens = await userService.refreshTokens(tokens.refreshToken);
+      const newTokens = await userService.refreshTokens({
+        refreshToken: tokens.refreshToken,
+      });
 
       expect(newTokens).toBeDefined();
       expect(typeof newTokens.accessToken).toBe('string');
@@ -178,7 +180,9 @@ describe('usersService', () => {
 
       expect(logins1).toHaveLength(3);
 
-      const logoutResult = await userService.logout(newTokens.refreshToken);
+      const logoutResult = await userService.logout({
+        refreshToken: newTokens.refreshToken,
+      });
       expect(logoutResult).toBe(true);
 
       const logins2 = await dataSource
@@ -188,13 +192,13 @@ describe('usersService', () => {
       expect(logins2).toHaveLength(2);
 
       await expect(
-        userService.refreshTokens(newTokens.refreshToken),
+        userService.refreshTokens({ refreshToken: newTokens.refreshToken }),
       ).rejects.toThrow();
     });
 
     it('should not refresh the tokens', async () => {
       await expect(
-        userService.refreshTokens('InVaLid_ToKeN'),
+        userService.refreshTokens({ refreshToken: 'InVaLid_ToKeN' }),
       ).rejects.toThrow();
     });
   });
