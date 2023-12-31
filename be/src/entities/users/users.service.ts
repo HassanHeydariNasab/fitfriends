@@ -110,6 +110,7 @@ export class UsersService {
       return await this.dataSource.getRepository(User).findOneOrFail({
         where: { id: userId },
         select: {
+          id: true,
           name: true,
           avatarUrl: true,
           bio: true,
@@ -126,6 +127,7 @@ export class UsersService {
       return await this.dataSource.getRepository(User).findOneOrFail({
         where: { id: userId },
         select: {
+          id: true,
           name: true,
           avatarUrl: true,
           bio: true,

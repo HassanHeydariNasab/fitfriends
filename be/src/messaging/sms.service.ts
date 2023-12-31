@@ -13,6 +13,12 @@ export class SmsService {
   }
 
   sendOtp(phoneNumber: string, code: string) {
+    if (this.options.dryRun) {
+      console.log(
+        `Dry run: SMS OTP code ${code} sent to ${phoneNumber} successfully.`,
+      );
+      return Promise.resolve(true);
+    }
     return new Promise<boolean>((resolve) => {
       this.kavenegar.VerifyLookup(
         {

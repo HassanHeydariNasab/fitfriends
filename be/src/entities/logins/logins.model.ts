@@ -1,4 +1,4 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
 import {
   Column,
   CreateDateColumn,
@@ -15,8 +15,9 @@ import { User } from '../users/users.model';
 @Entity()
 @ObjectType()
 export class Login {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  @Field(() => ID)
+  id: string;
 
   @Column({ unique: true })
   hashedRefreshToken: string;

@@ -29,6 +29,11 @@ type Group {
   sessions: [Session!]!
 }
 
+type Login {
+  id: ID!
+  updatedAt: DateTime!
+}
+
 type User {
   id: ID!
   phoneNumber: String!
@@ -37,6 +42,7 @@ type User {
   avatarUrl: String
   bio: String
   tags: [String!]!
+  logins: [Login!]!
   administeredGroups: [Group!]!
   joinedGroups: [Group!]!
   participatedSessions: [Session!]!
@@ -63,6 +69,8 @@ type Mutation {
   requestOTP(requestOtpInput: RequestOtpInput!): Boolean!
   verifyOTP(verifyOtpInput: VerifyOtpInput!): VerifyOtpResponse!
   registerUser(registerUserInput: RegisterUserInput!): Boolean!
+  refreshToken(refreshTokenInput: RefreshTokenInput!): Boolean!
+  logout(logoutInput: LogoutInput!): Boolean!
   updateUser(id: ID!, updateUserInput: UpdateUserInput!): Boolean!
   createSession(createSessionInput: CreateSessionInput!): Session!
   updateSession(updateSessionInput: UpdateSessionInput!): Session!
@@ -86,6 +94,14 @@ input RegisterUserInput {
 input CreateUserInput {
   name: String!
   tags: [String!]! = []
+}
+
+input RefreshTokenInput {
+  refreshToken: String!
+}
+
+input LogoutInput {
+  refreshToken: String!
 }
 
 input UpdateUserInput {

@@ -14,6 +14,7 @@ import { AppService } from './app.service';
 import { User } from './entities/users/users.model';
 import { Group } from './entities/groups/groups.model';
 import { Session } from './entities/sessions/sessions.model';
+import { Login } from './entities/logins/logins.model';
 import { OtpModule } from './entities/otp/otp.module';
 import { UsersModule } from './entities/users/users.module';
 import { GroupsModule } from './entities/groups/groups.module';
@@ -31,7 +32,7 @@ import { GqlAuthGuard } from './auth/gql-auth.guard';
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: env.DATABASE_URL,
-      entities: [User, Group, Session, Otp],
+      entities: [User, Group, Session, Otp, Login],
       synchronize: false,
       logging: true,
     }),
@@ -44,6 +45,7 @@ import { GqlAuthGuard } from './auth/gql-auth.guard';
       sms: {
         verificationTemplate: env.KAVENEGAR_VERIFICATION_TEMPLATE,
         apiKey: env.KAVENEGAR_API_KEY,
+        dryRun: env.NODE_ENV !== 'prod',
       },
     }),
     AuthModule.forRoot({

@@ -86,7 +86,7 @@ export class AuthService {
       .getRepository<Login>(Login)
       .find({ where: { userId } });
 
-    let loginId: number | null = null;
+    let loginId: string | null = null;
     for (const login of logins) {
       if (await compare(refreshToken.split('.')[2], login.hashedRefreshToken)) {
         loginId = login.id;
@@ -150,7 +150,7 @@ export class AuthService {
       where: { userId },
     });
 
-    let loginId: number | null = null;
+    let loginId: string | null = null;
     for (const login of logins) {
       if (await compare(refreshToken.split('.')[2], login.hashedRefreshToken)) {
         loginId = login.id;
