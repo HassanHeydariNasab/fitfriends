@@ -10,6 +10,7 @@ import { Session } from '../sessions/sessions.model';
 import { OtpModule } from '../otp/otp.module';
 import { OtpService } from '../otp/otp.service';
 import { Otp } from '../otp/otp.model';
+import { Login } from '../logins/logins.model';
 import { MessagingModule } from 'src/messaging/messaging.module';
 import { SmsService } from 'src/messaging/sms.service';
 import { AuthModule } from 'src/auth/auth.module';
@@ -32,7 +33,7 @@ describe('usersService', () => {
         TypeOrmModule.forRoot({
           type: 'postgres',
           url: env.DATABASE_URL,
-          entities: [User, Group, Session, Otp],
+          entities: [User, Group, Session, Otp, Login],
           synchronize: true,
           dropSchema: true,
           logging: false,
@@ -75,10 +76,12 @@ describe('usersService', () => {
 
   describe('register a new user and login the existing user', () => {
     const userName = 'testUser1';
+    const phoneNumber = '09013792332';
+    let userId = null;
 
     it('should request OTP', async () => {
       const result = await userService.requestOtp({
-        phoneNumber: '09013792332',
+        phoneNumber,
       });
       expect(result).toBe(true);
       expect(sentCode).toHaveLength(5);
@@ -86,14 +89,14 @@ describe('usersService', () => {
 
     it('should verify OTP and register a new user', async () => {
       const verifyOtpResult = await userService.verifyOtp({
-        phoneNumber: '09013792332',
+        phoneNumber,
         code: sentCode,
       });
 
       expect(verifyOtpResult).toEqual({ isRegistered: false });
 
       const registerUserResult = await userService.registerUser({
-        verifyOtpInput: { code: sentCode, phoneNumber: '09013792332' },
+        verifyOtpInput: { code: sentCode, phoneNumber },
         createUserInput: {
           name: userName,
           tags: ['testTag1', 'testTag2'],
@@ -105,27 +108,42 @@ describe('usersService', () => {
       expect(typeof registerUserResult.tokens.refreshToken).toBe('string');
 
       const users = await dataSource.getRepository(User).find({
-        where: { phoneNumber: '09013792332' },
+        where: { phoneNumber },
       });
 
       expect(users).toHaveLength(1);
 
       const user = users[0];
+      userId = user.id;
 
+      expect(user).toBeDefined();
+      expect(user?.name).toBe(userName);
+
+      const newTokens = await userService.refreshTokens(
+        registerUserResult.tokens.refreshToken,
+      );
+
+      expect(newTokens).toBeDefined();
+      expect(typeof newTokens.accessToken).toBe('string');
+      expect(typeof newTokens.refreshToken).toBe('string');
+    });
+
+    it('should get the user', async () => {
+      const user = await userService.getUser(userId);
       expect(user).toBeDefined();
       expect(user?.name).toBe(userName);
     });
 
     it('should login the existing user', async () => {
       const result = await userService.requestOtp({
-        phoneNumber: '09013792332',
+        phoneNumber,
       });
 
       expect(result).toBe(true);
       expect(sentCode).toHaveLength(5);
 
       const verifyOtpResult = await userService.verifyOtp({
-        phoneNumber: '09013792332',
+        phoneNumber,
         code: sentCode,
       });
 
@@ -135,7 +153,7 @@ describe('usersService', () => {
       expect(typeof verifyOtpResult.tokens.refreshToken).toBe('string');
 
       const users = await dataSource.getRepository(User).find({
-        where: { phoneNumber: '09013792332' },
+        where: { phoneNumber },
       });
 
       expect(users).toHaveLength(1);
@@ -144,12 +162,20 @@ describe('usersService', () => {
 
       expect(user).toBeDefined();
       expect(user?.name).toBe(userName);
+
+      const { tokens } = verifyOtpResult;
+
+      const newTokens = await userService.refreshTokens(tokens.refreshToken);
+
+      expect(newTokens).toBeDefined();
+      expect(typeof newTokens.accessToken).toBe('string');
+      expect(typeof newTokens.refreshToken).toBe('string');
     });
 
-    it('should get the user', async () => {
-      const user = await userService.getUser(1); // TODO: use the user id from the previous test
-      expect(user).toBeDefined();
-      expect(user?.name).toBe(userName);
+    it('should not refresh the tokens', async () => {
+      await expect(
+        userService.refreshTokens('InVaLid_ToKeN'),
+      ).rejects.toThrow();
     });
   });
 });

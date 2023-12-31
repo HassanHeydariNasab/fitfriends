@@ -8,6 +8,7 @@ import { DataSource } from 'typeorm';
 import { UsersModule } from 'src/entities/users/users.module';
 import { UsersService } from 'src/entities/users/users.service';
 import { User } from 'src/entities/users/users.model';
+import { Login } from '../logins/logins.model';
 import { Session } from 'src/entities/sessions/sessions.model';
 import { OtpModule } from 'src/entities/otp/otp.module';
 import { Otp } from '../otp/otp.model';
@@ -35,7 +36,7 @@ describe('groupsService', () => {
         TypeOrmModule.forRoot({
           type: 'postgres',
           url: env.DATABASE_URL,
-          entities: [User, Group, Session, Otp],
+          entities: [User, Group, Session, Otp, Login],
           synchronize: true,
           dropSchema: true,
           logging: false,

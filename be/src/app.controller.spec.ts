@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { User } from './entities/users/users.model';
+import { Login } from './entities/logins/logins.model';
 import { Group } from './entities/groups/groups.model';
 import { Session } from './entities/sessions/sessions.model';
 import { Otp } from './entities/otp/otp.model';
@@ -21,7 +22,7 @@ describe('AppController', () => {
         TypeOrmModule.forRoot({
           type: 'postgres',
           url: env.DATABASE_URL,
-          entities: [User, Group, Session, Otp],
+          entities: [User, Group, Session, Otp, Login],
           synchronize: true,
           dropSchema: true,
           logging: false,

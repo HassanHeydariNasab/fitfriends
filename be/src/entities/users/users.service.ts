@@ -40,9 +40,10 @@ export class UsersService {
         .findOne({ where: { phoneNumber } });
       if (user) {
         await this.otpService.delete(phoneNumber);
+        const { tokens } = await this.authService.login(user.id);
         return {
           isRegistered: true,
-          tokens: this.authService.generateTokens(user),
+          tokens,
         };
       } else {
         await this.otpService.extendExpiration(phoneNumber); // more time for registration
@@ -52,12 +53,15 @@ export class UsersService {
     throw new HttpException('invalid_otp', HttpStatus.CONFLICT);
   }
 
-  private async createUser(
+  /** Don't expose this method to the user. Use registerUser instead. */
+  async createUser(
     createUserInput: CreateUserInput & { phoneNumber: string },
-  ): Promise<true> {
+  ): Promise<number> {
     try {
-      await this.dataSource.getRepository(User).insert(createUserInput);
-      return true;
+      const insertResult = await this.dataSource
+        .getRepository(User)
+        .insert(createUserInput);
+      return insertResult.identifiers[0].id;
     } catch (error) {
       throw new HttpException(error, HttpStatus.CONFLICT);
     }
@@ -77,20 +81,55 @@ export class UsersService {
       where: { phoneNumber: verifyOtpInput.phoneNumber },
     });
     if (user) {
-      return Promise.resolve({ tokens: this.authService.generateTokens(user) });
+      const { tokens } = await this.authService.login(user.id);
+      return { tokens };
     } else {
       throw new HttpException('user_not_found', HttpStatus.NOT_FOUND);
     }
   }
 
-  async getUser(id: number) {
+  async refreshTokens(refreshToken: string) {
+    return await this.authService.refreshTokens(refreshToken);
+  }
+
+  async getUser(userId: number) {
     try {
       return await this.dataSource.getRepository(User).findOneOrFail({
-        where: { id },
+        where: { id: userId },
+        select: {
+          name: true,
+          avatarUrl: true,
+          bio: true,
+          tags: true,
+        },
+      });
+    } catch (error) {
+      throw new HttpException('user_not_found', HttpStatus.NOT_FOUND);
+    }
+  }
+
+  async getMe(userId: number) {
+    try {
+      return await this.dataSource.getRepository(User).findOneOrFail({
+        where: { id: userId },
+        select: {
+          name: true,
+          avatarUrl: true,
+          bio: true,
+          tags: true,
+          administeredGroups: { id: true, name: true, coverUrl: true },
+          joinedGroups: { id: true, name: true, coverUrl: true },
+          participatedSessions: { id: true },
+          logins: {
+            id: true,
+            updatedAt: true,
+          },
+        },
         relations: {
           administeredGroups: true,
           joinedGroups: true,
           participatedSessions: true,
+          logins: true,
         },
       });
     } catch (error) {

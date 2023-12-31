@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { SessionsService } from './sessions.service';
 import { Session } from './sessions.model';
 import { User } from '../users/users.model';
+import { Login } from '../logins/logins.model';
 import { Group } from '../groups/groups.model';
 import { OtpModule } from '../otp/otp.module';
 import { Otp } from '../otp/otp.model';
@@ -21,7 +22,7 @@ describe('SessionsService', () => {
         TypeOrmModule.forRoot({
           type: 'postgres',
           url: env.DATABASE_URL,
-          entities: [User, Group, Session, Otp],
+          entities: [User, Group, Session, Otp, Login],
           synchronize: false,
           logging: false,
         }),

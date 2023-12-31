@@ -19,8 +19,7 @@ export class UsersResolver {
 
   @Query(() => User)
   async me(@CurrentUserId() userId: number) {
-    console.log({ userId });
-    return await this.usersService.getUser(userId);
+    return await this.usersService.getMe(userId);
   }
 
   @Query(() => User)

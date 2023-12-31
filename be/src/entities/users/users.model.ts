@@ -5,12 +5,14 @@ import {
   DeleteDateColumn,
   Entity,
   ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 import { Group } from '../groups/groups.model';
 import { Session } from '../sessions/sessions.model';
+import { Login } from '../logins/logins.model';
 
 @Entity()
 @ObjectType()
@@ -22,6 +24,9 @@ export class User {
   @Column({ unique: true })
   @Field()
   phoneNumber: string;
+
+  @Column('simple-array', { default: [] })
+  hashedRefreshTokens: string[];
 
   @Column({ unique: true, nullable: true })
   @Field({ nullable: true })
@@ -54,6 +59,10 @@ export class User {
 
   @DeleteDateColumn()
   deletedAt: Date;
+
+  @OneToMany(() => Login, (login) => login.user)
+  @Field(() => [Login])
+  logins: Login[];
 
   @ManyToMany(() => Group, (group) => group.admins)
   @Field(() => [Group])
