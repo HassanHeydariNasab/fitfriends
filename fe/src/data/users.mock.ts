@@ -12,7 +12,7 @@ export const mockedUsers: User[] = [
 	},
 	{
 		id: '2',
-		name: 'Saeed',
+		name: 'Pablo',
 		bio: "I'm a serious road runner",
 		tags: ['running', 'football'],
 		latitude: 35.7992447039,
@@ -22,9 +22,9 @@ export const mockedUsers: User[] = [
 
 	{
 		id: '3',
-		name: 'John',
-		bio: "I'm a lazy road runner",
-		tags: ['running', 'basketball'],
+		name: 'Maria',
+		bio: "I'm a lazy road runner who is looking for good persons to walk with.",
+		tags: ['running', 'basketball', 'walking'],
 		latitude: 35.799244704,
 		longitude: 51.4408664171,
 		avatarUrl: '/avatars/sample-avatar-2.png'
